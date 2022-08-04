@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './burger-ingridients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsItem from "./burger-ingridients-item/burger-ingridients-item";
 
@@ -8,13 +9,15 @@ class BurgerIngredients extends React.Component {
         super(props);
         this.state = {
             current: 'one',
+            cart: []
         }
     }
 
     render() {
         return (
-            <section style={{ display:'flex', flexDirection: 'column', width: '600px' }}>
-                <div style={{ display: 'flex' }}>
+            <section style={{ display:'flex', flexDirection: 'column', width: '600px' }} className='pt-10'>
+                <span style={{ fontSize: '36px' }}>Соберите бургер</span>
+                <div style={{ display: 'flex', fontWeight: '700' }} className='pt-5'>
                     <Tab value="one" active={this.state.current === 'one'} onClick={this.setCurrent}>
                         Булки
                     </Tab>
@@ -25,7 +28,7 @@ class BurgerIngredients extends React.Component {
                         Начинки
                     </Tab>
                 </div>
-                <section style={{overflowY: 'scroll', maxHeight: "calc(100vh - 125px)"}}>
+                <section style={{overflowY: 'scroll', maxHeight: "calc(100vh - 125px)"}} className={styles.customScrollBar}>
                     {this.renderBun()}
                     {this.renderSauce()}
                     {this.renderMain()}
@@ -51,7 +54,7 @@ class BurgerIngredients extends React.Component {
                 <div id='goto-one' className='text text_type_main-medium pt-10 mb-6'>Булки</div>
                 <div style={{display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: "center"}}>
                     {
-                        buns.map(item => <BurgerIngridientsItem key={item._id} data={item}/>)
+                        buns.map(item => <BurgerIngridientsItem addToCart={this.addToCart} key={item._id} data={item}/>)
                     }
                 </div>
             </>
@@ -84,6 +87,10 @@ class BurgerIngredients extends React.Component {
                 </div>
             </>
         )
+    }
+
+    addToCart = (item) => {
+        console.log(item);
     }
 
 }

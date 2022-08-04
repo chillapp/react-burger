@@ -1,21 +1,47 @@
 import React from "react";
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from './burger-ingridients-item.module.css';
+
 
 class BurgerIngridientsItem extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            selected: 0,
+        }
+    }
+
     render() {
         const item = this.props.data;
         return (
-            <div style={{flex: "1", display: "flex", flexDirection: "column", alignItems:"center", justifyContent:"center"}}>
-                <div style={{width:'240px',height:'120'}}>
+            <div className={styles.item} onClick={this.incItem}>
+                {this.state.selected > 0 ? <Counter count={this.state.selected}/> : null}
+                <div className={styles.image}>
                     <img src={item.image}  alt=''/>
                 </div>
-                <div style={{display:"flex", alignItems: "center"}}>
+                <div className={styles.price}>
                     <span className='pr-3 text text_type_digits-default'>{item.price}</span>
                     <CurrencyIcon type='primary'/>
                 </div>
-                <span className='pt-1' style={{textAlign: "center"}}>{item.name}</span>
+                <span className={`${styles.name} pt-1`}>{item.name}</span>
             </div>
         )
+    }
+
+    incItem = () => {
+        this.setState((state) => {
+            if (this.props.data.type === 'bun') {
+                if (state.selected > 0) {
+                    return {selected: state.selected - 1};
+                } else {
+                    return {selected: state.selected + 1};
+                }
+            } else {
+                return {selected: state.selected + 1};
+            }
+        });
+
     }
 }
 
