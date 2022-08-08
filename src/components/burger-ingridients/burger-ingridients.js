@@ -1,5 +1,6 @@
 import React from "react";
-import styles from './burger-ingridients.module.css';
+import PropTypes from 'prop-types';
+import commonStyles from '../../styles/common.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsItem from "./burger-ingridients-item/burger-ingridients-item";
 
@@ -9,15 +10,15 @@ class BurgerIngredients extends React.Component {
         super(props);
         this.state = {
             current: 'one',
-            cart: []
         }
     }
 
     render() {
+
         return (
-            <section style={{ display:'flex', flexDirection: 'column', width: '600px' }} className='pt-10'>
-                <span style={{ fontSize: '36px' }}>Соберите бургер</span>
-                <div style={{ display: 'flex', fontWeight: '700' }} className='pt-5'>
+            <section style={{ maxWidth: '600px' }} className={`pt-10 ${commonStyles.flexColumn} ${commonStyles.flexFill}`}>
+                <span className='text text_type_main-large'>Соберите бургер</span>
+                <div className={`pt-5 ${commonStyles.flexRow} ${commonStyles.flexFill}`}>
                     <Tab value="one" active={this.state.current === 'one'} onClick={this.setCurrent}>
                         Булки
                     </Tab>
@@ -28,7 +29,7 @@ class BurgerIngredients extends React.Component {
                         Начинки
                     </Tab>
                 </div>
-                <section style={{overflowY: 'scroll', maxHeight: "calc(100vh - 125px)"}} className={styles.customScrollBar}>
+                <section className={`scrollerY`}>
                     {this.renderBun()}
                     {this.renderSauce()}
                     {this.renderMain()}
@@ -48,13 +49,21 @@ class BurgerIngredients extends React.Component {
     }
 
     renderBun = () => {
+        const { addToCart } = this.props;
         const buns = this.props.data.filter(item => item.type === 'bun');
         return (
             <>
                 <div id='goto-one' className='text text_type_main-medium pt-10 mb-6'>Булки</div>
                 <div style={{display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: "center"}}>
                     {
-                        buns.map(item => <BurgerIngridientsItem addToCart={this.addToCart} key={item._id} data={item}/>)
+                        buns.map(item =>
+                            <BurgerIngridientsItem
+                                addToCart={addToCart}
+                                key={item._id}
+                                data={item}
+                                selected={this.props.cart.filter(cartItem => cartItem._id === item._id).length}
+                            />
+                        )
                     }
                 </div>
             </>
@@ -62,13 +71,21 @@ class BurgerIngredients extends React.Component {
     }
 
     renderSauce = () => {
+        const { addToCart } = this.props;
         const sauces = this.props.data.filter(item => item.type === 'sauce');
         return (
             <>
                 <div id='goto-two' className='text text_type_main-medium pt-10 mb-6'>Соусы</div>
                 <div style={{display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: "center"}}>
                     {
-                        sauces.map(item => <BurgerIngridientsItem key={item._id} data={item}/>)
+                        sauces.map(item =>
+                            <BurgerIngridientsItem
+                                addToCart={addToCart}
+                                key={item._id}
+                                data={item}
+                                selected={this.props.cart.filter(cartItem => cartItem._id === item._id).length}
+                            />
+                        )
                     }
                 </div>
             </>
@@ -76,23 +93,33 @@ class BurgerIngredients extends React.Component {
     }
 
     renderMain = () => {
+        const { addToCart } = this.props;
         const mains = this.props.data.filter(item => item.type === 'main');
         return (
             <>
                 <div id='goto-three' className='text text_type_main-medium pt-10 mb-6'>Начинки</div>
                 <div style={{display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: "center"}}>
                     {
-                        mains.map(item => <BurgerIngridientsItem key={item._id} data={item}/>)
+                        mains.map(item =>
+                            <BurgerIngridientsItem
+                                data={item}
+                                key={item._id}
+                                addToCart={addToCart}
+                                selected={this.props.cart.filter(cartItem => cartItem._id === item._id).length}
+                            />
+                        )
                     }
                 </div>
             </>
         )
     }
 
-    addToCart = (item) => {
-        console.log(item);
-    }
+}
 
+BurgerIngredients.propTypes = {
+    data: PropTypes.arrayOf(BurgerIngridientsItem.propTypes.data),
+    cart: PropTypes.arrayOf(BurgerIngridientsItem.propTypes.data),
+    addToCart: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients;

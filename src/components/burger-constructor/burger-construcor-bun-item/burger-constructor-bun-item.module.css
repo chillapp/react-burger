@@ -1,0 +1,14 @@
+.itemTop {
+    border-radius: 88px 88px 40px 40px;
+    user-select: none;
+}
+
+.itemDown {
+    border-radius: 40px 40px 88px 88px;;
+    user-select: none;
+}
+
+.smallImage {
+    width: 80px;
+    height: 40px;
+}

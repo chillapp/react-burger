@@ -1,22 +1,15 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingridients-item.module.css';
 
 
 class BurgerIngridientsItem extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            selected: 0,
-        }
-    }
-
     render() {
-        const item = this.props.data;
+        const { data: item, addToCart, selected } = this.props;
         return (
-            <div className={styles.item} onClick={this.incItem}>
-                {this.state.selected > 0 ? <Counter count={this.state.selected}/> : null}
+            <div className={styles.item} onClick={addToCart.bind(this, item)}>
+                {selected > 0 ? <Counter count={selected}/> : null}
                 <div className={styles.image}>
                     <img src={item.image}  alt=''/>
                 </div>
@@ -28,21 +21,25 @@ class BurgerIngridientsItem extends React.Component {
             </div>
         )
     }
+}
 
-    incItem = () => {
-        this.setState((state) => {
-            if (this.props.data.type === 'bun') {
-                if (state.selected > 0) {
-                    return {selected: state.selected - 1};
-                } else {
-                    return {selected: state.selected + 1};
-                }
-            } else {
-                return {selected: state.selected + 1};
-            }
-        });
-
-    }
+BurgerIngridientsItem.propTypes = {
+    data: PropTypes.shape({
+        "_id": PropTypes.string,
+        "name": PropTypes.string,
+        "type": PropTypes.oneOf(['bun', 'sauce', 'main']),
+        "proteins": PropTypes.number,
+        "fat": PropTypes.number,
+        "carbohydrates": PropTypes.number,
+        "calories": PropTypes.number,
+        "price": PropTypes.number,
+        "image": PropTypes.string,
+        "image_mobile": PropTypes.string,
+        "image_large": PropTypes.string,
+        "__v": PropTypes.number
+    }).isRequired,
+    addToCart: PropTypes.func,
+    selected: PropTypes.number
 }
 
 export default BurgerIngridientsItem;

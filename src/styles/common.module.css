@@ -1,0 +1,40 @@
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexAICenter {
+    align-items: center;
+}
+
+.flexJCCenter {
+    justify-content: center;
+}
+
+.flexJCRight {
+    justify-content: right;
+}
+
+.flexFill {
+    flex: 1;
+}
+
+.panelColor {
+    background-color: rgba(255,255,255,.05);
+}
+
+.icon36 {
+    width: 36px;
+    height: 36px;
+}
+
+.page {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+}
