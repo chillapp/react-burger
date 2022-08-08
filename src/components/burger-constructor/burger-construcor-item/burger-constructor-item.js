@@ -10,7 +10,7 @@ class BurgerConstructorItem extends React.Component {
         const {cartItem, deleteItem} = this.props;
         return (
             <div className={`${commonStyles.flexRow} ${commonStyles.flexAICenter} pt-4`}>
-                <DragIcon />
+                <DragIcon type='primary'/>
                 <div className={`pt-4 pb-4 pr-8 pl-6 mr-2 ${styles.item} ${commonStyles.flexFill}`}>
                     <img alt='' className={styles.smallImage} src={cartItem.image}/>
                     <span className='text text_type_main-default ml-5' style={{flex: '1'}}>{cartItem.name}</span>
