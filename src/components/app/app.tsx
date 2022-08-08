@@ -6,7 +6,7 @@ import BurgerPage from "../burger-page/burger-page";
 function App() {
     return (
         <>
-            <AppHeader></AppHeader>
+            <AppHeader />
             <BurgerPage data={data}/>
         </>
     );
