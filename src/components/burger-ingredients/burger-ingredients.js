@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from 'prop-types';
 import commonStyles from '../../styles/common.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngridientsItem from "./burger-ingridients-item/burger-ingridients-item";
+import BurgerIngredientsItem from "./burger-ingredients-item/burger-ingredients-item.js";
+import ingredientType from "../../utils/types";
 
 class BurgerIngredients extends React.Component {
 
@@ -54,10 +55,10 @@ class BurgerIngredients extends React.Component {
         return (
             <>
                 <div id='goto-one' className='text text_type_main-medium pt-10 mb-6'>Булки</div>
-                <div style={{display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: "center"}}>
+                <div className={`${commonStyles.flexRow} ${commonStyles.flexWrap} ${commonStyles.flexJCCenter}`}>
                     {
                         buns.map(item =>
-                            <BurgerIngridientsItem
+                            <BurgerIngredientsItem
                                 addToCart={addToCart}
                                 key={item._id}
                                 data={item}
@@ -76,10 +77,10 @@ class BurgerIngredients extends React.Component {
         return (
             <>
                 <div id='goto-two' className='text text_type_main-medium pt-10 mb-6'>Соусы</div>
-                <div style={{display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: "center"}}>
+                <div className={`${commonStyles.flexRow} ${commonStyles.flexWrap} ${commonStyles.flexJCCenter}`}>
                     {
                         sauces.map(item =>
-                            <BurgerIngridientsItem
+                            <BurgerIngredientsItem
                                 addToCart={addToCart}
                                 key={item._id}
                                 data={item}
@@ -98,10 +99,10 @@ class BurgerIngredients extends React.Component {
         return (
             <>
                 <div id='goto-three' className='text text_type_main-medium pt-10 mb-6'>Начинки</div>
-                <div style={{display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: "center"}}>
+                <div className={`${commonStyles.flexRow} ${commonStyles.flexWrap} ${commonStyles.flexJCCenter}`}>
                     {
                         mains.map(item =>
-                            <BurgerIngridientsItem
+                            <BurgerIngredientsItem
                                 data={item}
                                 key={item._id}
                                 addToCart={addToCart}
@@ -117,8 +118,8 @@ class BurgerIngredients extends React.Component {
 }
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(BurgerIngridientsItem.propTypes.data),
-    cart: PropTypes.arrayOf(BurgerIngridientsItem.propTypes.data),
+    data: PropTypes.arrayOf(ingredientType),
+    cart: PropTypes.arrayOf(ingredientType),
     addToCart: PropTypes.func.isRequired
 }
 

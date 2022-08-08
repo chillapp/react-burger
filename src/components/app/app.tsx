@@ -1,7 +1,7 @@
 import React from 'react';
-import AppHeader from "./components/app-header/app-header";
-import data from "./utils/data";
-import BurgerPage from "./components/burger-page/burger-page";
+import data from "../../utils/data";
+import AppHeader from "../app-header/app-header";
+import BurgerPage from "../burger-page/burger-page";
 
 function App() {
     return (

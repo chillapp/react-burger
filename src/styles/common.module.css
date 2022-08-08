@@ -1,11 +1,17 @@
 .flexRow {
     display: flex;
+    position: relative;
     flex-direction: row;
 }
 
 .flexColumn {
     display: flex;
+    position: relative;
     flex-direction: column;
+}
+
+.flexWrap {
+    flex-wrap: wrap;
 }
 
 .flexAICenter {
@@ -18,6 +24,10 @@
 
 .flexJCRight {
     justify-content: right;
+}
+
+.flexJCAround {
+    justify-content: space-around;
 }
 
 .flexFill {

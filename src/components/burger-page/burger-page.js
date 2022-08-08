@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import commonStyles from "../../styles/common.module.css";
-import BurgerIngredients from "../burger-ingridients/burger-ingridients";
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import BurgerIngridientsItem from "../burger-ingridients/burger-ingridients-item/burger-ingridients-item";
+import ingredientType from "../../utils/types";
 
 class BurgerPage extends React.Component {
 
@@ -17,9 +17,8 @@ class BurgerPage extends React.Component {
     render() {
         const { data } = this.props;
         return (
-            <section className={`${commonStyles.flexRow} ${commonStyles.flexJCCenter} ${commonStyles.page}`}>
+            <section className={`${commonStyles.flexRow} ${commonStyles.flexJCCenter} ${commonStyles.page} pb-4`}>
                 <BurgerIngredients data={data} cart={this.state.cart} addToCart={this.addToCart} />
-                <div style={{width: '40px'}}></div>
                 <BurgerConstructor cart={this.state.cart} deleteFromCart={this.deleteFromCart}/>
             </section>
         );
@@ -46,7 +45,7 @@ class BurgerPage extends React.Component {
 }
 
 BurgerPage.propTypes = {
-    data: PropTypes.arrayOf(BurgerIngridientsItem.propTypes.data)
+    data: PropTypes.arrayOf(ingredientType)
 }
 
 export default BurgerPage;

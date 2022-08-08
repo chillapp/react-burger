@@ -9,11 +9,11 @@ import IconButton from "../icon-button/icon-button";
 class AppHeader extends React.Component {
     render() {
         return (
-            <header className={`p-4 ${commonStyles.panelColor}`} style={{position: "relative", display: "flex", justifyContent: "space-around"}}>
+            <header className={`p-4 ${commonStyles.panelColor} ${commonStyles.flexRow} ${commonStyles.flexJCAround}`}>
                 <div className={styles.logoCentering}>
                     <Logo />
                 </div>
-                <section style={{display: "flex"}}>
+                <section className={commonStyles.flexRow}>
                     <IconButton icon='burger'>Конструктор</IconButton>
                     <IconButton icon='list'>Лента заказов</IconButton>
                 </section>
