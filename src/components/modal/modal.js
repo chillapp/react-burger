@@ -11,8 +11,6 @@ const modalRoot = document.getElementById("react-modals");
 
 export default function Modal({ header, children, onClose, isOpen }) {
 
-
-
     React.useEffect(() => {
         const closeByEsc = (e) => {
             if (e.keyCode === 27) onClose();
