@@ -11,29 +11,26 @@ export default function App() {
 
     const getIngredients = () => {
         setError({has: false, message: ''});
-        const promise = fetch(api, { method: 'GET' });
+        let promise = fetch(api, { method: 'GET' });
         promise.then(response => {
             if (response.ok) {
-                const dataPromise = response.json();
-                dataPromise.then(data => {
-                    if (data.success) {
-                        setData(data.data);
-                    } else {
-                        setError({has: true, message: 'response error'});
-                    }
-                })
-                dataPromise.catch(error => setError({has: true, message: error}));
-            } else {
-                setError({has: true, message: 'request error'});
+                return response.json();
             }
-        });
-        promise.catch(error => setError({has: true, message: error}));
+            return Promise.reject(`Ошибка ${response.status}`);
+        }).then(data => {
+            if (data.success) {
+                setData(data.data);
+            } else {
+                setError({has: true, message: 'response error'});
+            }
+        }).catch(error => setError({has: true, message: error}));
+
     }
 
     return (
         <>
             <AppHeader/>
-            {error.has ? `<span>${error.message}</span>` : <BurgerPage data={data}/>}
+            {error.has ? <span>{error.message}</span> : <BurgerPage data={data}/>}
         </>
     );
 }
