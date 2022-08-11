@@ -51,7 +51,7 @@ export default function BurgerConstructor({ cart, deleteFromCart }) {
                 </div>
             </section>
             {createOrder && (
-                    <Modal header={'Детали заказа'} onClose={closeCreateOrderModal}>
+                    <Modal isOpen={createOrder} header={'Детали заказа'} onClose={closeCreateOrderModal}>
                         <OrderDetails/>
                     </Modal>
             )}

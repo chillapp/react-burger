@@ -34,7 +34,7 @@ export default function BurgerIngredientsItem({ data, addToCart, selected }) {
                 </div>
             </div>
             {detailsModal && (
-                <Modal header='Детали ингредиента' onClose={hideDetails}>
+                <Modal isOpen={detailsModal} header='Детали ингредиента' onClose={hideDetails}>
                     <IngredientDetails ingredient={data}/>
                 </Modal>
             )}

@@ -9,23 +9,19 @@ import PropTypes from "prop-types";
 
 const modalRoot = document.getElementById("react-modals");
 
-export default function Modal({ header, children, onClose }) {
+export default function Modal({ header, children, onClose, isOpen }) {
 
-    const closeByEsc = (e) => {
-        if (e.keyCode === 27) onClose();
-    }
 
-    const addEvent = () => {
-        document.addEventListener('keyup', closeByEsc);
-    }
-    const removeEvent = () => {
-        document.removeEventListener('keyup', closeByEsc);
-    }
 
     React.useEffect(() => {
-        addEvent();
-        return () => removeEvent();
-    }, []);
+        const closeByEsc = (e) => {
+            if (e.keyCode === 27) onClose();
+        };
+        if (isOpen) {
+            document.addEventListener('keyup', closeByEsc);
+            return () => document.removeEventListener('keyup', closeByEsc);
+        }
+    }, [isOpen]);
 
     return ReactDOM.createPortal(
         <>
