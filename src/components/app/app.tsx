@@ -22,6 +22,7 @@ export default function App() {
                         setError({has: true, message: 'response error'});
                     }
                 })
+                dataPromise.catch(error => setError({has: true, message: error}));
             } else {
                 setError({has: true, message: 'request error'});
             }

@@ -95,7 +95,7 @@ export default function BurgerIngredients({ data, cart, addToCart }) {
 }
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(ingredientType),
-    cart: PropTypes.arrayOf(ingredientType),
+    data: PropTypes.arrayOf(ingredientType).isRequired,
+    cart: PropTypes.arrayOf(ingredientType).isRequired,
     addToCart: PropTypes.func.isRequired
 }

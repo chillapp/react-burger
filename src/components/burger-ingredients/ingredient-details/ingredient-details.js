@@ -1,4 +1,5 @@
 import CommonStyles from '../../../styles/common.module.css'
+import ingredientType from "../../../utils/types";
 
 export default function IngredientDetails({ ingredient }) {
     return (
@@ -25,4 +26,8 @@ export default function IngredientDetails({ ingredient }) {
             </div>
         </div>
     );
+}
+
+IngredientDetails.propTypes = {
+    ingredient: ingredientType.isRequired,
 }

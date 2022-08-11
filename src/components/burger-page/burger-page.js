@@ -36,5 +36,5 @@ export default function BurgerPage({ data }) {
 }
 
 BurgerPage.propTypes = {
-    data: PropTypes.arrayOf(ingredientType)
+    data: PropTypes.arrayOf(ingredientType).isRequired
 }

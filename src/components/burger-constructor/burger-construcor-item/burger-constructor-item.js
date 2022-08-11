@@ -3,6 +3,8 @@ import IconButton from "../../icon-button/icon-button";
 import styles from './burger-constructor-item.module.css';
 import commonStyles from '../../../styles/common.module.css';
 import {CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import ingredientType from "../../../utils/types";
+import PropTypes from "prop-types";
 
 export default function BurgerConstructorItem({cartItem, deleteItem}) {
     return (
@@ -19,4 +21,9 @@ export default function BurgerConstructorItem({cartItem, deleteItem}) {
             </div>
         </li>
     );
+}
+
+BurgerConstructorItem.propTypes = {
+    cartItem: ingredientType.isRequired,
+    deleteItem: PropTypes.func.isRequired
 }

@@ -25,7 +25,7 @@ export default function BurgerConstructor({ cart, deleteFromCart }) {
 
     const bunItem = cart.filter(x => x.type === 'bun');
     return (
-        <div style={{overflow: 'hidden'}}>
+        <>
             <section className={`pt-25 ml-10 ${commonStyles.flexColumn} ${styles.content}`}>
                 {bunItem.length ? <BurgerConstructorBunItem role='top' bun={bunItem[0]} /> : null}
                 <ul className={`scrollerY ${commonStyles.flexColumn} ${styles.list}`}>
@@ -50,19 +50,16 @@ export default function BurgerConstructor({ cart, deleteFromCart }) {
                     </div>
                 </div>
             </section>
-            {createOrder &&
-                (
+            {createOrder && (
                     <Modal header={'Детали заказа'} onClose={closeCreateOrderModal}>
                         <OrderDetails/>
                     </Modal>
-                )
-            }
-
-        </div>
+            )}
+        </>
     );
 }
 
 BurgerConstructor.propTypes = {
-    cart: PropTypes.arrayOf(ingredientType),
+    cart: PropTypes.arrayOf(ingredientType).isRequired,
     deleteFromCart: PropTypes.func.isRequired
 }

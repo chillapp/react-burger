@@ -44,6 +44,6 @@ export default function BurgerIngredientsItem({ data, addToCart, selected }) {
 
 BurgerIngredientsItem.propTypes = {
     data: ingredientType.isRequired,
-    addToCart: PropTypes.func,
-    selected: PropTypes.number
+    addToCart: PropTypes.func.isRequired,
+    selected: PropTypes.number.isRequired
 }
