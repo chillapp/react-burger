@@ -4,24 +4,20 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import styles from './burger-ingredients-item.module.css';
 import ingredientType from "../../../utils/types";
 
-
-class BurgerIngredientsItem extends React.Component {
-    render() {
-        const { data, addToCart, selected } = this.props;
-        return (
-            <div className={styles.item} onClick={addToCart.bind(this, data)}>
-                {selected > 0 ? <Counter count={selected}/> : null}
-                <div className={styles.image}>
-                    <img src={data.image}  alt=''/>
-                </div>
-                <div className={styles.price}>
-                    <span className='pr-3 text text_type_digits-default'>{data.price}</span>
-                    <CurrencyIcon type='primary'/>
-                </div>
-                <span className={`${styles.name} pt-1`}>{data.name}</span>
+export default function BurgerIngredientsItem({ data, addToCart, selected }) {
+    return (
+        <div className={styles.item} onClick={addToCart.bind(this, data)}>
+            {selected > 0 ? <Counter count={selected}/> : null}
+            <div className={styles.image}>
+                <img src={data.image}  alt=''/>
             </div>
-        )
-    }
+            <div className={styles.price}>
+                <span className='pr-3 text text_type_digits-default'>{data.price}</span>
+                <CurrencyIcon type='primary'/>
+            </div>
+            <span className={`${styles.name} pt-1`}>{data.name}</span>
+        </div>
+    )
 }
 
 BurgerIngredientsItem.propTypes = {
@@ -29,5 +25,3 @@ BurgerIngredientsItem.propTypes = {
     addToCart: PropTypes.func,
     selected: PropTypes.number
 }
-
-export default BurgerIngredientsItem;

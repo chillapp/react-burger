@@ -5,53 +5,11 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsItem from "./burger-ingredients-item/burger-ingredients-item.js";
 import ingredientType from "../../utils/types";
 
-class BurgerIngredients extends React.Component {
+export default function BurgerIngredients({ data, cart, addToCart }) {
+    const [currentTab, setCurrentTab] = React.useState('one');
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            current: 'one',
-        }
-    }
-
-    render() {
-
-        return (
-            <section style={{ maxWidth: '600px' }} className={`pt-10 ${commonStyles.flexColumn} ${commonStyles.flexFill}`}>
-                <span className='text text_type_main-large'>Соберите бургер</span>
-                <div className={`pt-5 ${commonStyles.flexRow} ${commonStyles.flexFill}`}>
-                    <Tab value="one" active={this.state.current === 'one'} onClick={this.setCurrent}>
-                        Булки
-                    </Tab>
-                    <Tab value="two" active={this.state.current === 'two'} onClick={this.setCurrent}>
-                        Соусы
-                    </Tab>
-                    <Tab value="three" active={this.state.current === 'three'} onClick={this.setCurrent}>
-                        Начинки
-                    </Tab>
-                </div>
-                <section className={`scrollerY`}>
-                    {this.renderBun()}
-                    {this.renderSauce()}
-                    {this.renderMain()}
-                </section>
-            </section>
-        )
-    }
-
-    setCurrent = (value) => {
-        this.setState({current: value});
-        this.executeScroll(value);
-    }
-
-    executeScroll = (value) => {
-        const el = document.getElementById(`goto-${value}`);
-        el.scrollIntoView();
-    }
-
-    renderBun = () => {
-        const { addToCart } = this.props;
-        const buns = this.props.data.filter(item => item.type === 'bun');
+    const renderBun = () => {
+        const buns = data.filter(item => item.type === 'bun');
         return (
             <>
                 <div id='goto-one' className='text text_type_main-medium pt-10 mb-6'>Булки</div>
@@ -62,7 +20,7 @@ class BurgerIngredients extends React.Component {
                                 addToCart={addToCart}
                                 key={item._id}
                                 data={item}
-                                selected={this.props.cart.filter(cartItem => cartItem._id === item._id).length}
+                                selected={cart.filter(cartItem => cartItem._id === item._id).length}
                             />
                         )
                     }
@@ -71,9 +29,8 @@ class BurgerIngredients extends React.Component {
         )
     }
 
-    renderSauce = () => {
-        const { addToCart } = this.props;
-        const sauces = this.props.data.filter(item => item.type === 'sauce');
+    const renderSauce = () => {
+        const sauces = data.filter(item => item.type === 'sauce');
         return (
             <>
                 <div id='goto-two' className='text text_type_main-medium pt-10 mb-6'>Соусы</div>
@@ -84,7 +41,7 @@ class BurgerIngredients extends React.Component {
                                 addToCart={addToCart}
                                 key={item._id}
                                 data={item}
-                                selected={this.props.cart.filter(cartItem => cartItem._id === item._id).length}
+                                selected={cart.filter(cartItem => cartItem._id === item._id).length}
                             />
                         )
                     }
@@ -93,9 +50,8 @@ class BurgerIngredients extends React.Component {
         )
     }
 
-    renderMain = () => {
-        const { addToCart } = this.props;
-        const mains = this.props.data.filter(item => item.type === 'main');
+    const renderMain = () => {
+        const mains = data.filter(item => item.type === 'main');
         return (
             <>
                 <div id='goto-three' className='text text_type_main-medium pt-10 mb-6'>Начинки</div>
@@ -106,7 +62,7 @@ class BurgerIngredients extends React.Component {
                                 data={item}
                                 key={item._id}
                                 addToCart={addToCart}
-                                selected={this.props.cart.filter(cartItem => cartItem._id === item._id).length}
+                                selected={cart.filter(cartItem => cartItem._id === item._id).length}
                             />
                         )
                     }
@@ -115,6 +71,27 @@ class BurgerIngredients extends React.Component {
         )
     }
 
+    return (
+        <section style={{ maxWidth: '600px' }} className={`pt-10 ${commonStyles.flexColumn} ${commonStyles.flexFill}`}>
+            <span className='text text_type_main-large'>Соберите бургер</span>
+            <div className={`pt-5 ${commonStyles.flexRow} ${commonStyles.flexFill}`}>
+                <Tab value="one" active={currentTab === 'one'} onClick={setCurrentTab}>
+                    Булки
+                </Tab>
+                <Tab value="two" active={currentTab === 'two'} onClick={setCurrentTab}>
+                    Соусы
+                </Tab>
+                <Tab value="three" active={currentTab === 'three'} onClick={setCurrentTab}>
+                    Начинки
+                </Tab>
+            </div>
+            <section className={`scrollerY`}>
+                {renderBun()}
+                {renderSauce()}
+                {renderMain()}
+            </section>
+        </section>
+    );
 }
 
 BurgerIngredients.propTypes = {
@@ -122,5 +99,3 @@ BurgerIngredients.propTypes = {
     cart: PropTypes.arrayOf(ingredientType),
     addToCart: PropTypes.func.isRequired
 }
-
-export default BurgerIngredients;

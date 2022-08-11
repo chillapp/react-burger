@@ -3,7 +3,7 @@ import data from "../../utils/data";
 import AppHeader from "../app-header/app-header";
 import BurgerPage from "../burger-page/burger-page";
 
-function App() {
+export default function App() {
     return (
         <>
             <AppHeader />
@@ -12,4 +12,4 @@ function App() {
     );
 }
 
-export default App;
+;

@@ -2,19 +2,10 @@ import React from "react";
 import styles from './icon-button.module.css'
 import {ListIcon, ProfileIcon, BurgerIcon, DeleteIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 
-class IconButton extends React.Component {
+export default function IconButton({ icon, click, children }) {
 
-    render() {
-        return (
-            <button className={`${styles.iconButton} text_color_inactive`} onClick={this.props.click}>
-                {this.getIcon()}
-                <span className="text text_type_main-default">{this.props.children}</span>
-            </button>
-        );
-    }
-
-    getIcon = () => {
-        switch (this.props.icon) {
+    const getIcon = () => {
+        switch (icon) {
             case 'burger':
                 return <span className="mr-2"><BurgerIcon type='primary'/></span>
             case 'list':
@@ -26,6 +17,11 @@ class IconButton extends React.Component {
             default: return '';
         }
     }
-}
 
-export default IconButton;
+    return (
+        <button className={`${styles.iconButton} text_color_inactive`} onClick={click}>
+            {getIcon()}
+            <span className="text text_type_main-default">{children}</span>
+        </button>
+    );
+}
