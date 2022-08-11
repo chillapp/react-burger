@@ -30,6 +30,10 @@
     justify-content: space-around;
 }
 
+.flexJCBetween {
+    justify-content: space-between;
+}
+
 .flexFill {
     flex: 1;
 }
@@ -47,4 +51,14 @@
     overflow: auto;
     width: 100%;
     height: 100%;
+}
+
+.button {
+    border: unset;
+    background: unset;
+    cursor: pointer;
+}
+
+.textCenter {
+    text-align: center;
 }
