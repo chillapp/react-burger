@@ -29,7 +29,7 @@ export default function BurgerIngredientsItem({ data, addToCart, selected }) {
                 <div className={`${CommonStyles.flexRow} ${CommonStyles.flexAICenter}`}>
                     <span className={`${styles.name} pt-1`}>{data.name}</span>
                     <button className={`ml-2 ${CommonStyles.button}`} onClick={showDetails}>
-                        <InfoIcon/>
+                        <InfoIcon type='primary'/>
                     </button>
                 </div>
             </div>
