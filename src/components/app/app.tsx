@@ -11,8 +11,7 @@ export default function App() {
 
     const getIngredients = () => {
         setError({has: false, message: ''});
-        let promise = fetch(api, { method: 'GET' });
-        promise.then(response => {
+        fetch(api, { method: 'GET' }).then(response => {
             if (response.ok) {
                 return response.json();
             }
@@ -21,9 +20,10 @@ export default function App() {
             if (data.success) {
                 setData(data.data);
             } else {
-                setError({has: true, message: 'response error'});
+                return Promise.reject(`Ошибка ${data}`);
             }
         }).catch(error => setError({has: true, message: error}));
+
 
     }
 

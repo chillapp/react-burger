@@ -48,5 +48,5 @@ export default function Modal({ header, children, onClose }) {
 
 Modal.propTypes = {
     header: PropTypes.string,
-    onClose: PropTypes.func
+    onClose: PropTypes.func.isRequired
 }
