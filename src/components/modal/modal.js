@@ -13,7 +13,7 @@ export default function Modal({ header, children, onClose, isOpen }) {
 
     React.useEffect(() => {
         const closeByEsc = (e) => {
-            if (e.keyCode === 27) onClose();
+            if (e.key === 'Escape') onClose();
         };
         if (isOpen) {
             document.addEventListener('keyup', closeByEsc);
@@ -41,6 +41,8 @@ export default function Modal({ header, children, onClose, isOpen }) {
 }
 
 Modal.propTypes = {
+    children: PropTypes.any,
     header: PropTypes.string,
+    isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
 }
