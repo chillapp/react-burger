@@ -4,9 +4,12 @@ import commonStyles from '../../styles/common.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsItem from "./burger-ingredients-item/burger-ingredients-item.js";
 import ingredientType from "../../utils/types";
+import {CartContext} from "../../services/cartContext";
 
-export default function BurgerIngredients({ data, cart, addToCart }) {
+export default function BurgerIngredients({ data }) {
     const [currentTab, setCurrentTab] = React.useState('one');
+
+    const [cart] = React.useContext(CartContext);
 
     const renderBun = () => {
         const buns = data.filter(item => item.type === 'bun');
@@ -17,7 +20,6 @@ export default function BurgerIngredients({ data, cart, addToCart }) {
                     {
                         buns.map(item =>
                             <BurgerIngredientsItem
-                                addToCart={addToCart}
                                 key={item._id}
                                 data={item}
                                 selected={cart.filter(cartItem => cartItem._id === item._id).length}
@@ -38,7 +40,6 @@ export default function BurgerIngredients({ data, cart, addToCart }) {
                     {
                         sauces.map(item =>
                             <BurgerIngredientsItem
-                                addToCart={addToCart}
                                 key={item._id}
                                 data={item}
                                 selected={cart.filter(cartItem => cartItem._id === item._id).length}
@@ -61,7 +62,6 @@ export default function BurgerIngredients({ data, cart, addToCart }) {
                             <BurgerIngredientsItem
                                 data={item}
                                 key={item._id}
-                                addToCart={addToCart}
                                 selected={cart.filter(cartItem => cartItem._id === item._id).length}
                             />
                         )
@@ -96,6 +96,4 @@ export default function BurgerIngredients({ data, cart, addToCart }) {
 
 BurgerIngredients.propTypes = {
     data: PropTypes.arrayOf(ingredientType).isRequired,
-    cart: PropTypes.arrayOf(ingredientType).isRequired,
-    addToCart: PropTypes.func.isRequired
 }

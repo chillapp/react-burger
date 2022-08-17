@@ -1,18 +1,19 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import BurgerConstructorItem from "./burger-construcor-item/burger-constructor-item";
 import BurgerConstructorBunItem from "./burger-construcor-bun-item/burger-constructor-bun-item";
 import commonStyles from '../../styles/common.module.css';
 import styles from './burger-construtor.module.css';
 
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientType from "../../utils/types";
 import Modal from "../modal/modal";
 import OrderDetails from "./order-details/order-details";
+import {CartContext} from "../../services/cartContext";
 
-export default function BurgerConstructor({ cart, deleteFromCart }) {
+export default function BurgerConstructor() {
     const [totalPrice, setTotalPrice] = React.useState(0);
     const [createOrder, setCreateOrder] = React.useState(false);
+
+    const [cart] = React.useContext(CartContext);
 
     React.useEffect(() => {
         let total = 0;
@@ -35,7 +36,6 @@ export default function BurgerConstructor({ cart, deleteFromCart }) {
                             <BurgerConstructorItem
                                 key={index}
                                 cartItem={cartItem}
-                                deleteItem={deleteFromCart}
                             />
                         )
 
@@ -57,9 +57,4 @@ export default function BurgerConstructor({ cart, deleteFromCart }) {
             )}
         </>
     );
-}
-
-BurgerConstructor.propTypes = {
-    cart: PropTypes.arrayOf(ingredientType).isRequired,
-    deleteFromCart: PropTypes.func.isRequired
 }

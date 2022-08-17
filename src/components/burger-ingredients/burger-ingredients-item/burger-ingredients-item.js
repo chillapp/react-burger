@@ -6,9 +6,11 @@ import CommonStyles from '../../../styles/common.module.css';
 import ingredientType from "../../../utils/types";
 import Modal from "../../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import {CartContext} from "../../../services/cartContext";
 
-export default function BurgerIngredientsItem({ data, addToCart, selected }) {
+export default function BurgerIngredientsItem({ data, selected }) {
     const [detailsModal, setDetailsModal] = React.useState(false);
+    const [, setCart] = React.useContext(CartContext);
     const showDetails = e => {
         e.preventDefault();
         e.stopPropagation();
@@ -17,7 +19,7 @@ export default function BurgerIngredientsItem({ data, addToCart, selected }) {
     const hideDetails = () => setDetailsModal(false);
     return (
         <>
-            <div className={styles.item} onClick={addToCart.bind(this, data)}>
+            <div className={styles.item} onClick={setCart.bind(this, {type:'append', payload: data})}>
                 {selected > 0 ? <Counter count={selected}/> : null}
                 <div className={styles.image}>
                     <img src={data.image}  alt=''/>
@@ -44,6 +46,6 @@ export default function BurgerIngredientsItem({ data, addToCart, selected }) {
 
 BurgerIngredientsItem.propTypes = {
     data: ingredientType.isRequired,
-    addToCart: PropTypes.func.isRequired,
+    // addToCart: PropTypes.func.isRequired,
     selected: PropTypes.number.isRequired
 }
