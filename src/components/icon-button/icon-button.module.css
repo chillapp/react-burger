@@ -1,0 +1,16 @@
+.iconButton {
+    background: unset;
+    border: unset;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+}
+
+.iconButton:hover * {
+    color: white;
+}
+
+.iconButton:focus * {
+    color: white;
+}
