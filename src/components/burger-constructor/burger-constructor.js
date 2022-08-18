@@ -24,24 +24,24 @@ export default function BurgerConstructor() {
     const showCreateOrderModal = () => setCreateOrder(true);
     const closeCreateOrderModal = () => setCreateOrder(false);
 
-    const bunItem = cart.filter(x => x.type === 'bun');
+    const bunItem = React.useMemo(() => cart.filter(x => x.type === 'bun'), [cart]);
+    const ingredientItems = React.useMemo(() => {
+        return cart.filter(x => x.type !== 'bun').map((cartItem, index) =>
+            <BurgerConstructorItem
+                key={index}
+                cartItem={cartItem}
+            />
+        )
+    }, [cart]);
+
     return (
         <>
             <section className={`pt-25 ml-10 ${commonStyles.flexColumn} ${styles.content}`}>
-                {bunItem.length ? <BurgerConstructorBunItem role='top' bun={bunItem[0]} /> : null}
+                <BurgerConstructorBunItem role='top' bun={bunItem && bunItem[0]} />
                 <ul className={`scrollerY ${commonStyles.flexColumn} ${styles.list}`}>
-                    {
-
-                        cart.filter(x => x.type !== 'bun').map((cartItem, index) =>
-                            <BurgerConstructorItem
-                                key={index}
-                                cartItem={cartItem}
-                            />
-                        )
-
-                    }
+                    { ingredientItems }
                 </ul>
-                {bunItem.length ? <BurgerConstructorBunItem role='bottom' bun={bunItem[0]} /> : null}
+                <BurgerConstructorBunItem role='bottom' bun={bunItem && bunItem[0]} />
                 <div style={{visibility: totalPrice > 0 ? 'visible' : 'hidden'}} className={`pt-10 ${commonStyles.flexRow} ${commonStyles.flexAICenter} ${commonStyles.flexJCRight}`}>
                     <span className='text text_type_digits-medium'>{totalPrice}</span>
                     <CurrencyIcon type='primary'/>

@@ -16,9 +16,9 @@ export default function BurgerConstructorBunItem({ role, bun }) {
                     ${commonStyles.flexFill}
                     ${role === 'top' ? styles.itemTop : styles.itemBottom}`
             }>
-                <img alt='' className={styles.smallImage} src={bun.image}/>
-                <span className={`text text_type_main-default ml-5 ${commonStyles.flexFill}`}>{bun.name}{role === 'top' ? ' (верх)' : ' (низ)'}</span>
-                <span className='ml-5 mr-1 text text_type_digits-default'>{bun.price / 2}</span>
+                <img style={{display: bun ? 'unset' : 'none'}} alt='' className={styles.smallImage} src={bun && bun.image}/>
+                <span className={`text text_type_main-default ml-5 ${commonStyles.flexFill}`}>{bun ? bun.name : 'выберите булку'}{role === 'top' ? ' (верх)' : ' (низ)'}</span>
+                <span className='ml-5 mr-1 text text_type_digits-default'>{bun ? bun.price / 2 : 0}</span>
                 <CurrencyIcon type='primary'/>
                 <div className='pl-5'>
                     <LockIcon type='secondary'/>
@@ -29,6 +29,6 @@ export default function BurgerConstructorBunItem({ role, bun }) {
 }
 
 BurgerConstructorBunItem.propTypes = {
-    bun: ingredientType.isRequired,
+    bun: ingredientType,
     role: PropTypes.oneOf(['top', 'bottom']).isRequired
 }

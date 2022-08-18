@@ -1,12 +1,10 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import commonStyles from "../../styles/common.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import ingredientType from "../../utils/types";
 import {CartContext} from "../../services/cartContext";
 
-export default function BurgerPage({ data }) {
+export default function BurgerPage() {
 
     const cartReducer = (cart, action) => {
 
@@ -34,6 +32,8 @@ export default function BurgerPage({ data }) {
                 return addToCart(action.payload);
             case 'remove':
                 return deleteFromCart(action.payload);
+            case 'reset':
+                return [];
             default: throw new Error(`Wrong type of action: ${action.type}`);
         }
     }
@@ -42,13 +42,9 @@ export default function BurgerPage({ data }) {
     return (
         <section className={`${commonStyles.flexRow} ${commonStyles.flexJCCenter} ${commonStyles.page} pb-4`}>
             <CartContext.Provider value={cartState}>
-                <BurgerIngredients data={data} />
+                <BurgerIngredients />
                 <BurgerConstructor />
             </CartContext.Provider>
         </section>
     );
-}
-
-BurgerPage.propTypes = {
-    data: PropTypes.arrayOf(ingredientType).isRequired
 }

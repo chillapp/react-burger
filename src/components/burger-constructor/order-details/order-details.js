@@ -3,14 +3,14 @@ import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components"
 import {CartContext} from "../../../services/cartContext";
 import React from "react";
 import Spinner from "../../spinner/spinner";
-
-const api = 'https://norma.nomoreparties.space/api/orders';
+import { checkResponse, checkSuccess } from "../../../services/http";
+import {getApiUrl} from "../../app/app";
 
 export default function OrderDetails() {
     const [request, setRequest] = React.useState({ loading: false, error: null });
     const [order, setOrder] = React.useState(null);
 
-    const [cart] = React.useContext(CartContext);
+    const [cart, setCart] = React.useContext(CartContext);
 
     const createOrder = (ids) => {
         setOrder(null);
@@ -22,22 +22,18 @@ export default function OrderDetails() {
             },
             body: JSON.stringify({ ingredients: ids }),
         };
-        fetch(api, fetchParams).then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            return Promise.reject(`Ошибка ${response.status}`);
-        }).then(data => {
-            if (data.success) {
+        fetch(getApiUrl('orders'), fetchParams)
+            .then(checkResponse)
+            .then(checkSuccess)
+            .then(payload => {
+                setCart({type: 'reset'});
                 setRequest({loading: false, error: null})
-                setOrder({ name: data.name, ...data.order });
-            } else {
-                return Promise.reject(`Ошибка ${data}`);
-            }
-        }).catch(error => {
-            setOrder(null);
-            setRequest({ loading: false, error: error });
-        });
+                setOrder({ name: payload.name, ...payload.order });
+            })
+            .catch(error => {
+                setOrder(null);
+                setRequest({ loading: false, error: error });
+            });
     }
 
     React.useEffect(() => createOrder(cart.map(item => item._id)), []);
