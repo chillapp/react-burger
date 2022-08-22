@@ -4,9 +4,10 @@ import styles from './burger-constructor-item.module.css';
 import commonStyles from '../../../styles/common.module.css';
 import {CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientType from "../../../utils/types";
-import PropTypes from "prop-types";
+import {CartContext} from "../../../services/cartContext";
 
-export default function BurgerConstructorItem({cartItem, deleteItem}) {
+export default function BurgerConstructorItem({cartItem}) {
+    const [, setCart] = React.useContext(CartContext);
     return (
         <li className={`${commonStyles.flexRow} ${commonStyles.flexFill} ${commonStyles.flexAICenter} mt-4`}>
             <DragIcon type='primary'/>
@@ -16,7 +17,7 @@ export default function BurgerConstructorItem({cartItem, deleteItem}) {
                 <span className='ml-5 mr-1 text text_type_digits-default'>{cartItem.price}</span>
                 <CurrencyIcon type='primary'/>
                 <div className='pl-5'>
-                    <IconButton icon='delete' click={deleteItem.bind(this, cartItem)}/>
+                    <IconButton icon='delete' click={setCart.bind(this, {type: 'remove', payload: cartItem})}/>
                 </div>
             </div>
         </li>
@@ -25,5 +26,4 @@ export default function BurgerConstructorItem({cartItem, deleteItem}) {
 
 BurgerConstructorItem.propTypes = {
     cartItem: ingredientType.isRequired,
-    deleteItem: PropTypes.func.isRequired
 }
