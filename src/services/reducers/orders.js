@@ -9,7 +9,7 @@ const initialState = {
 
 export const orderReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(OrderRequest, (state, { payload}) => {
+        .addCase(OrderRequest, (state) => {
             const currentState = current(state);
             return {
                 ...currentState,
@@ -27,7 +27,7 @@ export const orderReducer = createReducer(initialState, (builder) => {
                 order: payload
             }
         })
-        .addCase(OrderFail, (state, { payload }) => {
+        .addCase(OrderFail, (state) => {
             const currentState = current(state);
             return {
                 ...currentState,

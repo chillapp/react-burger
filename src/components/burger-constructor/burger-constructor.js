@@ -30,7 +30,7 @@ export default function BurgerConstructor() {
 
     const bunItem = React.useMemo(() => cart.filter(x => x.type === 'bun'), [cart]);
     const ingredientItems = React.useMemo(() => {
-        return cart.filter(x => x.type !== 'bun').map((cartItem, index) =>
+        return cart.filter(x => x.type !== 'bun').map((cartItem) =>
             <BurgerConstructorItem
                 key={cartItem.uuid}
                 cartItem={cartItem}
