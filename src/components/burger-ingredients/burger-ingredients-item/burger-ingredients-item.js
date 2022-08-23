@@ -6,20 +6,35 @@ import CommonStyles from '../../../styles/common.module.css';
 import ingredientType from "../../../utils/types";
 import Modal from "../../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {CartContext} from "../../../services/cartContext";
+import {useDispatch} from "react-redux";
+import {ConstructorAdd} from "../../../services/actions/constructor";
+import {useDrag} from "react-dnd";
 
 export default function BurgerIngredientsItem({ data, selected }) {
+    const [{ opacity }, dragRef] = useDrag({
+        type: 'ingredient',
+        item: { ...data },
+        collect: monitor => ({
+            opacity: monitor.isDragging() ? 0.5 : 1
+        })
+    });
+
+    const dispatch = useDispatch();
+
     const [detailsModal, setDetailsModal] = React.useState(false);
-    const [, setCart] = React.useContext(CartContext);
+
     const showDetails = e => {
         e.preventDefault();
         e.stopPropagation();
         setDetailsModal(true);
     }
     const hideDetails = () => setDetailsModal(false);
+
+    const addToCart = () => dispatch(ConstructorAdd(data));
+
     return (
         <>
-            <div className={styles.item} onClick={setCart.bind(this, {type:'append', payload: data})}>
+            <div draggable ref={dragRef} style={{ opacity: opacity }} className={styles.item} onClick={addToCart}>
                 {selected > 0 ? <Counter count={selected}/> : null}
                 <div className={styles.image}>
                     <img src={data.image}  alt=''/>
@@ -46,6 +61,5 @@ export default function BurgerIngredientsItem({ data, selected }) {
 
 BurgerIngredientsItem.propTypes = {
     data: ingredientType.isRequired,
-    // addToCart: PropTypes.func.isRequired,
     selected: PropTypes.number.isRequired
 }

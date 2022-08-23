@@ -19,7 +19,7 @@ export default function Modal({ header, children, onClose, isOpen }) {
             document.addEventListener('keyup', closeByEsc);
             return () => document.removeEventListener('keyup', closeByEsc);
         }
-    }, [isOpen]);
+    }, [isOpen, onClose]);
 
     return ReactDOM.createPortal(
         <>

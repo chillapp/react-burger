@@ -3,17 +3,18 @@ import commonStyles from '../../styles/common.module.css';
 import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsItem from "./burger-ingredients-item/burger-ingredients-item.js";
-import {CartContext} from "../../services/cartContext";
-import {BurgerContext} from "../../services/burgerContext";
+import {useDispatch, useSelector} from "react-redux";
+import {IngredientsSetTab} from "../../services/actions/ingredients";
 
 export default function BurgerIngredients() {
-    const [currentTab, setCurrentTab] = React.useState('one');
+    const dispatch = useDispatch();
 
-    const data = React.useContext(BurgerContext);
-    const [cart] = React.useContext(CartContext);
+    const { items: data, currentTab } = useSelector(store => store.ingredients);
+
+    const { items: cart } = useSelector(store => store.constructor);
 
     const tabClick = (tab, elRef) => {
-        setCurrentTab(tab);
+        dispatch(IngredientsSetTab(tab))
         elRef.current.scrollIntoView({behavior: 'smooth'});
     }
 
