@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React from "react";
 import commonStyles from '../../styles/common.module.css';
 import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
