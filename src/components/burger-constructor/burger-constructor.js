@@ -9,7 +9,7 @@ import Modal from "../modal/modal";
 import OrderDetails from "./order-details/order-details";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
-import {ConstructorAdd} from "../../services/actions/constructor";
+import {constructorAdd} from "../../services/actions/constructor";
 
 export default function BurgerConstructor() {
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function BurgerConstructor() {
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop(item) {
-            dispatch(ConstructorAdd(item))
+            dispatch(constructorAdd(item))
         },
     });
 

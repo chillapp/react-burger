@@ -3,30 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
-import {configureStore} from "@reduxjs/toolkit";
 import { Provider } from 'react-redux';
-import {rootReducer} from "./services/reducers";
-import thunk from "redux-thunk";
-
-const preloadedState = {
-    ingredients: {
-        items: [],
-        loading: false,
-        success: false,
-        currentTab: 'one',
-        showDetail: false,
-    },
-    constructor: {
-        items: [],
-        totalPrice: 0
-    }
-}
-
-const store = configureStore({
-    reducer: rootReducer,
-    middleware: [ thunk ],
-    preloadedState: preloadedState
-})
+import {store} from "./services/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -4,7 +4,7 @@ import React from "react";
 import Spinner from "../../spinner/spinner";
 import {useDispatch, useSelector} from "react-redux";
 import {createOrder} from "../../../services/actions/orders";
-import {ConstructorReset} from "../../../services/actions/constructor";
+import {constructorReset} from "../../../services/actions/constructor";
 
 export default function OrderDetails() {
     const dispatch = useDispatch();
@@ -18,7 +18,7 @@ export default function OrderDetails() {
     }
 
     React.useEffect(() => {
-        if (success) dispatch(ConstructorReset());
+        if (success) dispatch(constructorReset());
     }, [dispatch, success])
 
     // eslint-disable-next-line

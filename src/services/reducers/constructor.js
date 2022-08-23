@@ -1,5 +1,5 @@
 import {createReducer, current} from "@reduxjs/toolkit";
-import {ConstructorAdd, ConstructorDel, ConstructorReset, ConstructorReplace} from "../actions/constructor";
+import {constructorAdd, constructorDel, constructorReset, constructorReplace} from "../actions/constructor";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
@@ -9,7 +9,7 @@ const initialState = {
 
 export const constructorReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(ConstructorAdd, (state, { payload}) => {
+        .addCase(constructorAdd, (state, { payload}) => {
             const currentState = current(state);
             const newCart = [...currentState.items];
             if (payload.type === 'bun') {
@@ -23,7 +23,7 @@ export const constructorReducer = createReducer(initialState, (builder) => {
                 totalPrice: newCart.reduce((total, item) => total + item.price, 0)
             };
         })
-        .addCase(ConstructorDel, (state, { payload }) => {
+        .addCase(constructorDel, (state, { payload }) => {
             const currentState = current(state);
             const newCart = [...currentState.items];
             const deleteItemIndex = newCart.findIndex(item => item.lineno === payload.lineno);
@@ -34,7 +34,7 @@ export const constructorReducer = createReducer(initialState, (builder) => {
                 totalPrice: newCart.reduce((total, item) => total + item.price, 0)
             };
         })
-        .addCase(ConstructorReset, (state) => {
+        .addCase(constructorReset, (state) => {
             const currentState = current(state);
             return {
                 ...currentState,
@@ -42,7 +42,7 @@ export const constructorReducer = createReducer(initialState, (builder) => {
                 totalPrice: 0
             };
         })
-        .addCase(ConstructorReplace, (state,{ payload }) => {
+        .addCase(constructorReplace, (state, { payload }) => {
             const { dragItem, dropItem } = payload;
             const currentState = current(state);
             let newCart = [...currentState.items]

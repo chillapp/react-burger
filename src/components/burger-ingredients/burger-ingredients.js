@@ -4,7 +4,7 @@ import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsItem from "./burger-ingredients-item/burger-ingredients-item.js";
 import {useDispatch, useSelector} from "react-redux";
-import {IngredientsSetTab} from "../../services/actions/ingredients";
+import {ingredientsSetTab} from "../../services/actions/ingredients";
 
 export default function BurgerIngredients() {
     const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default function BurgerIngredients() {
     const { items: cart } = useSelector(store => store.constructor);
 
     const tabClick = (tab, elRef) => {
-        dispatch(IngredientsSetTab(tab));
+        dispatch(ingredientsSetTab(tab));
         elRef.current.scrollIntoView({behavior: 'smooth'});
     }
 
@@ -111,7 +111,7 @@ export default function BurgerIngredients() {
         const minIndex = values.indexOf(minValue);
 
         if (currentTab !== tabs[minIndex]) {
-            dispatch(IngredientsSetTab(tabs[minIndex]));
+            dispatch(ingredientsSetTab(tabs[minIndex]));
         }
     }
 

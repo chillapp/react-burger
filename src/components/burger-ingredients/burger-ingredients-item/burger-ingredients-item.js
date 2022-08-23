@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import {Counter, CurrencyIcon, InfoIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredients-item.module.css';
 import CommonStyles from '../../../styles/common.module.css';
 import ingredientType from "../../../utils/types";
 import Modal from "../../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {useDispatch} from "react-redux";
-import {ConstructorAdd} from "../../../services/actions/constructor";
 import {useDrag} from "react-dnd";
 
 export default function BurgerIngredientsItem({ data, selected }) {
@@ -19,8 +17,6 @@ export default function BurgerIngredientsItem({ data, selected }) {
         })
     });
 
-    const dispatch = useDispatch();
-
     const [detailsModal, setDetailsModal] = React.useState(false);
 
     const showDetails = e => {
@@ -30,11 +26,9 @@ export default function BurgerIngredientsItem({ data, selected }) {
     }
     const hideDetails = () => setDetailsModal(false);
 
-    const addToCart = () => dispatch(ConstructorAdd(data));
-
     return (
         <>
-            <div draggable ref={dragRef} style={{ opacity: opacity }} className={styles.item} onClick={addToCart}>
+            <div draggable ref={dragRef} style={{ opacity: opacity }} className={styles.item} onClick={showDetails}>
                 {selected > 0 ? <Counter count={selected}/> : null}
                 <div className={styles.image}>
                     <img src={data.image}  alt=''/>
@@ -45,9 +39,6 @@ export default function BurgerIngredientsItem({ data, selected }) {
                 </div>
                 <div className={`${CommonStyles.flexRow} ${CommonStyles.flexAICenter}`}>
                     <span className={`${styles.name} pt-1`}>{data.name}</span>
-                    <button className={`ml-2 ${CommonStyles.button}`} onClick={showDetails}>
-                        <InfoIcon type='primary'/>
-                    </button>
                 </div>
             </div>
             {detailsModal && (

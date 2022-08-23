@@ -2,13 +2,13 @@ import {createAction} from "@reduxjs/toolkit";
 import {getApiUrl} from "../../components/app/app";
 import {checkResponse, checkSuccess} from "../http";
 
-export const OrderRequest = createAction('ORDER/REQUEST');
-export const OrderSuccess = createAction('ORDER/SUCCESS');
-export const OrderFail = createAction('ORDER/FAIL');
+export const orderRequest = createAction('ORDER/REQUEST');
+export const orderSuccess = createAction('ORDER/SUCCESS');
+export const orderFail = createAction('ORDER/FAIL');
 
 export function createOrder(ids) {
     return function (dispatch) {
-        dispatch(OrderRequest());
+        dispatch(orderRequest());
         const fetchParams = {
             method: 'POST',
             headers: {
@@ -19,7 +19,7 @@ export function createOrder(ids) {
         fetch(getApiUrl('orders'), fetchParams)
             .then(checkResponse)
             .then(checkSuccess)
-            .then(payload => dispatch(OrderSuccess({ name: payload.name, ...payload.order })))
-            .catch(error => dispatch(OrderFail(error)));
+            .then(payload => dispatch(orderSuccess({ name: payload.name, ...payload.order })))
+            .catch(error => dispatch(orderFail(error)));
     }
 }

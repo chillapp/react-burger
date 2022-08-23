@@ -5,7 +5,7 @@ import commonStyles from '../../../styles/common.module.css';
 import {CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientType from "../../../utils/types";
 import {useDispatch, useSelector} from "react-redux";
-import {ConstructorDel, ConstructorReplace} from "../../../services/actions/constructor";
+import {constructorDel, constructorReplace} from "../../../services/actions/constructor";
 import {useDrag, useDrop} from "react-dnd";
 
 export default function BurgerConstructorItem({ cartItem }) {
@@ -13,7 +13,7 @@ export default function BurgerConstructorItem({ cartItem }) {
 
     const { items: cart } = useSelector(store => store.constructor);
 
-    const removeFromCart = () => dispatch(ConstructorDel(cartItem));
+    const removeFromCart = () => dispatch(constructorDel(cartItem));
 
     const [{ opacity }, dragRef] = useDrag({
         type: 'ingredient_move',
@@ -27,7 +27,7 @@ export default function BurgerConstructorItem({ cartItem }) {
         accept: 'ingredient_move',
         drop(item) {
             const payload = { dragItem: item, dropItem: cartItem };
-            dispatch(ConstructorReplace(payload))
+            dispatch(constructorReplace(payload))
         },
         collect: monitor => ({
             isHover: monitor.isOver(),

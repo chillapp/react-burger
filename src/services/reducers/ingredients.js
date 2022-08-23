@@ -1,10 +1,10 @@
 import {createReducer, current} from '@reduxjs/toolkit'
 import {
-    IngredientsRequest,
-    IngredientsSuccess,
-    IngredientsFail,
-    IngredientsSetTab,
-    IngredientsShowDetail
+    ingredientsRequest,
+    ingredientsSuccess,
+    ingredientsFail,
+    ingredientsSetTab,
+    ingredientsShowDetail
 } from "../actions/ingredients";
 
 const initialState = {
@@ -17,23 +17,23 @@ const initialState = {
 
 export const ingredientsReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(IngredientsRequest, (state) => {
+        .addCase(ingredientsRequest, (state) => {
             const currentState = current(state);
             return { ...currentState, items: [], loading: true, success: false };
         })
-        .addCase(IngredientsSuccess, (state, { payload }) => {
+        .addCase(ingredientsSuccess, (state, { payload }) => {
             const currentState = current(state);
             return { ...currentState, items: payload, loading: false, success: true };
         })
-        .addCase(IngredientsFail, (state) => {
+        .addCase(ingredientsFail, (state) => {
             const currentState = current(state);
             return { ...currentState, items: [], loading: false, success: false };
         })
-        .addCase(IngredientsSetTab, (state, { payload }) => {
+        .addCase(ingredientsSetTab, (state, { payload }) => {
             const currentState = current(state);
             return { ...currentState, currentTab: payload };
         })
-        .addCase(IngredientsShowDetail, (state, { payload }) => {
+        .addCase(ingredientsShowDetail, (state, { payload }) => {
             const currentState = current(state);
             return { ...currentState, showDetail: payload };
         })

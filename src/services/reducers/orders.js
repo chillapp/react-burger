@@ -1,5 +1,5 @@
 import {createReducer, current} from "@reduxjs/toolkit";
-import {OrderFail, OrderRequest, OrderSuccess} from "../actions/orders";
+import {orderFail, orderRequest, orderSuccess} from "../actions/orders";
 
 const initialState = {
     order: null,
@@ -9,7 +9,7 @@ const initialState = {
 
 export const orderReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(OrderRequest, (state) => {
+        .addCase(orderRequest, (state) => {
             const currentState = current(state);
             return {
                 ...currentState,
@@ -18,7 +18,7 @@ export const orderReducer = createReducer(initialState, (builder) => {
                 order: null
             }
         })
-        .addCase(OrderSuccess, (state, { payload }) => {
+        .addCase(orderSuccess, (state, { payload }) => {
             const currentState = current(state);
             return {
                 ...currentState,
@@ -27,7 +27,7 @@ export const orderReducer = createReducer(initialState, (builder) => {
                 order: payload
             }
         })
-        .addCase(OrderFail, (state) => {
+        .addCase(orderFail, (state) => {
             const currentState = current(state);
             return {
                 ...currentState,

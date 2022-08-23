@@ -2,19 +2,19 @@ import { createAction } from '@reduxjs/toolkit'
 import {checkResponse, checkSuccess} from "../http";
 import {getApiUrl} from "../../components/app/app";
 
-export const IngredientsFail = createAction('INGREDIENTS/FAIL')
-export const IngredientsRequest = createAction('INGREDIENTS/REQUEST')
-export const IngredientsSuccess = createAction('INGREDIENTS/SUCCESS')
-export const IngredientsSetTab = createAction('INGREDIENTS/SET_TAB')
-export const IngredientsShowDetail = createAction('INGREDIENTS/SHOW_DETAIL')
+export const ingredientsFail = createAction('INGREDIENTS/FAIL')
+export const ingredientsRequest = createAction('INGREDIENTS/REQUEST')
+export const ingredientsSuccess = createAction('INGREDIENTS/SUCCESS')
+export const ingredientsSetTab = createAction('INGREDIENTS/SET_TAB')
+export const ingredientsShowDetail = createAction('INGREDIENTS/SHOW_DETAIL')
 
 export function getIngredients() {
     return function (dispatch) {
-        dispatch(IngredientsRequest());
+        dispatch(ingredientsRequest());
         fetch(getApiUrl('ingredients'))
             .then(checkResponse)
             .then(checkSuccess)
-            .then(payload => dispatch(IngredientsSuccess(payload.data)))
-            .catch(error => dispatch(IngredientsFail(error)));
+            .then(payload => dispatch(ingredientsSuccess(payload.data)))
+            .catch(error => dispatch(ingredientsFail(error)));
     }
 }
