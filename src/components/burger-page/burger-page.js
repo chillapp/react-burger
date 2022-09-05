@@ -2,49 +2,34 @@ import React from "react";
 import commonStyles from "../../styles/common.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import {CartContext} from "../../services/cartContext";
+import {useDispatch, useSelector} from "react-redux";
+import {getIngredients} from "../../services/actions/ingredients";
+import Spinner from "../spinner/spinner";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function BurgerPage() {
+    const { loading, success } = useSelector(store => store.ingredients);
 
-    const cartReducer = (cart, action) => {
-
-        const addToCart = (item) => {
-            const newCart = [...cart];
-            if (item.type === 'bun') {
-                const bunIndex = newCart.findIndex(cartItem => cartItem.type === 'bun');
-                if (bunIndex >= 0) newCart.splice(bunIndex, 1);
-            }
-            newCart.push(Object.assign({}, item));
-            newCart.forEach((item, index) => item.lineno = index + 1);
-            return newCart;
-        }
-
-        const deleteFromCart = (deleteItem) => {
-            const newCart = [...cart];
-            const deleteItemIndex = newCart.findIndex(item => item.lineno === deleteItem.lineno);
-            newCart.splice(deleteItemIndex, 1);
-            newCart.forEach((item, index) => item.lineno = index + 1);
-            return newCart;
-        }
-
-        switch (action.type) {
-            case 'append':
-                return addToCart(action.payload);
-            case 'remove':
-                return deleteFromCart(action.payload);
-            case 'reset':
-                return [];
-            default: throw new Error(`Wrong type of action: ${action.type}`);
-        }
-    }
-    const cartState = React.useReducer(cartReducer, [], undefined);
+    const dispatch = useDispatch();
+    React.useEffect(() => dispatch(getIngredients()),[dispatch]);
 
     return (
         <section className={`${commonStyles.flexRow} ${commonStyles.flexJCCenter} ${commonStyles.page} pb-4`}>
-            <CartContext.Provider value={cartState}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-            </CartContext.Provider>
+            {
+                loading
+                ? <Spinner extraClass={`${commonStyles.flexItemASCenter}`} />
+                : success
+                    ? (
+                        <>
+                            <DndProvider backend={HTML5Backend}>
+                                <BurgerIngredients/>
+                                <BurgerConstructor/>
+                            </DndProvider>
+                        </>
+                    )
+                    : <span>Ошибка получения списка ингредиентов :(</span>
+            }
         </section>
     );
 }

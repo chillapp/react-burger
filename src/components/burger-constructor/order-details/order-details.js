@@ -1,42 +1,28 @@
 import CommonStyles from '../../../styles/common.module.css'
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {CartContext} from "../../../services/cartContext";
 import React from "react";
 import Spinner from "../../spinner/spinner";
-import { checkResponse, checkSuccess } from "../../../services/http";
-import {getApiUrl} from "../../app/app";
+import {useDispatch, useSelector} from "react-redux";
+import {createOrder} from "../../../services/actions/orders";
+import {constructorReset} from "../../../services/actions/constructor";
 
 export default function OrderDetails() {
-    const [request, setRequest] = React.useState({ loading: false, error: null });
-    const [order, setOrder] = React.useState(null);
+    const dispatch = useDispatch();
 
-    const [cart, setCart] = React.useContext(CartContext);
+    const { items: cart } = useSelector(store => store.constructor);
 
-    const createOrder = (ids) => {
-        setOrder(null);
-        setRequest({loading: true, error: null});
-        const fetchParams = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ingredients: ids }),
-        };
-        fetch(getApiUrl('orders'), fetchParams)
-            .then(checkResponse)
-            .then(checkSuccess)
-            .then(payload => {
-                setCart({type: 'reset'});
-                setRequest({loading: false, error: null})
-                setOrder({ name: payload.name, ...payload.order });
-            })
-            .catch(error => {
-                setOrder(null);
-                setRequest({ loading: false, error: error });
-            });
+    const { order, loading, success } = useSelector(store => store.orders);
+
+    const newOrder = (ids) => {
+        dispatch(createOrder(ids));
     }
 
-    React.useEffect(() => createOrder(cart.map(item => item._id)), []);
+    React.useEffect(() => {
+        if (success) dispatch(constructorReset());
+    }, [dispatch, success])
+
+    // eslint-disable-next-line
+    React.useEffect(() => newOrder(cart.map(item => item._id)), []);
 
     const orderDetails = (
         <div className={`${CommonStyles.flexColumn}`}>
@@ -50,5 +36,9 @@ export default function OrderDetails() {
         </div>
     );
 
-    return request.loading ? (<div className={`${CommonStyles.flexColumn} ${CommonStyles.flexAICenter}`}><Spinner/></div>) : request.error ? <span>{ request.error }</span> : orderDetails;
+    return loading
+        ? (<div className={`${CommonStyles.flexColumn} ${CommonStyles.flexAICenter}`}><Spinner/></div>)
+        : !success
+            ? <span>Ошибка создания заказа</span>
+            : orderDetails;
 }

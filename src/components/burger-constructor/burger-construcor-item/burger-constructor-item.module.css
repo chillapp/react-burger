@@ -10,3 +10,18 @@
     width: 80px;
     height: 40px;
 }
+
+.canDragUp {
+    margin: 16px 40% 0 40%;
+    border-top: 8px dotted green;
+}
+
+.canDragDown {
+    margin: 0 40%;
+    padding-bottom: 16px;
+    border-bottom: 8px dotted green;
+}
+
+.dragPointer {
+    cursor: grab;
+}

@@ -3,17 +3,18 @@ import commonStyles from '../../styles/common.module.css';
 import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsItem from "./burger-ingredients-item/burger-ingredients-item.js";
-import {CartContext} from "../../services/cartContext";
-import {BurgerContext} from "../../services/burgerContext";
+import {useDispatch, useSelector} from "react-redux";
+import {ingredientsSetTab} from "../../services/actions/ingredients";
 
 export default function BurgerIngredients() {
-    const [currentTab, setCurrentTab] = React.useState('one');
+    const dispatch = useDispatch();
 
-    const data = React.useContext(BurgerContext);
-    const [cart] = React.useContext(CartContext);
+    const { items: data, currentTab } = useSelector(store => store.ingredients);
+
+    const { items: cart } = useSelector(store => store.constructor);
 
     const tabClick = (tab, elRef) => {
-        setCurrentTab(tab);
+        dispatch(ingredientsSetTab(tab));
         elRef.current.scrollIntoView({behavior: 'smooth'});
     }
 
@@ -80,6 +81,40 @@ export default function BurgerIngredients() {
         )
     }, [data, cart]);
 
+
+    let scrollEndTimeOut = null;
+    const onScroll = (e) => {
+        if (scrollEndTimeOut) clearTimeout(scrollEndTimeOut);
+        scrollEndTimeOut = setTimeout(() => scrollEndHandler(e), 20);
+    }
+
+    const scrollEndHandler = (e) => {
+        const tabs = ['one', 'two', 'three'];
+
+        const containerRect = e.target.getBoundingClientRect();
+
+        const values = [];
+
+        const bunsRect = bunsRef.current.getBoundingClientRect();
+        const bunsY = Math.abs(parseInt(bunsRect.y - containerRect.y));
+        values.push(bunsY);
+
+        const saucesRect = saucesRef.current.getBoundingClientRect();
+        const saucesY = Math.abs(parseInt(saucesRect.y - containerRect.y));
+        values.push(saucesY);
+
+        const mainsRect = mainsRef.current.getBoundingClientRect();
+        const mainsY = Math.abs(parseInt(mainsRect.y - containerRect.y));
+        values.push(mainsY);
+
+        const minValue = Math.min(...values);
+        const minIndex = values.indexOf(minValue);
+
+        if (currentTab !== tabs[minIndex]) {
+            dispatch(ingredientsSetTab(tabs[minIndex]));
+        }
+    }
+
     return (
         <section className={`pt-10 ${styles.content} ${commonStyles.flexColumn} ${commonStyles.flexFill}`}>
             <span className='text text_type_main-large'>Соберите бургер</span>
@@ -106,7 +141,7 @@ export default function BurgerIngredients() {
                     Начинки
                 </Tab>
             </div>
-            <section className={`scrollerY`}>
+            <section className={`scrollerY`} onScroll={onScroll}>
                 { bunItems }
                 { sauceItems }
                 { mainItems }

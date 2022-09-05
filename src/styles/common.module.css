@@ -38,6 +38,10 @@
     flex: 1;
 }
 
+.flexItemASCenter {
+    align-self: center;
+}
+
 .panelColor {
     background-color: rgba(255,255,255,.05);
 }
