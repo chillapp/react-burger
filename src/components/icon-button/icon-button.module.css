@@ -5,12 +5,13 @@
     padding: 4px;
     display: flex;
     justify-content: center;
+    text-decoration: none;
 }
 
-.iconButton:hover * {
-    color: white;
+.active {
+
 }
 
-.iconButton:focus * {
+.iconButton.active {
     color: white;
 }

@@ -13,10 +13,10 @@ export default function AppHeader() {
                 <Logo />
             </div>
             <section className={commonStyles.flexRow}>
-                <IconButton icon='burger'>Конструктор</IconButton>
+                <IconButton navLink='/' icon='burger'>Конструктор</IconButton>
                 <IconButton icon='list'>Лента заказов</IconButton>
             </section>
-            <IconButton icon='profile'>Личный кабинет</IconButton>
+            <IconButton navLink='/profile' icon='profile'>Личный кабинет</IconButton>
         </header>
     );
 }

@@ -1,8 +1,9 @@
 export function checkResponse(response) {
-    if (response.ok) {
-        return response.json();
-    }
-    return Promise.reject(`Ошибка ${response.status}`);
+    //if (response.ok) {
+    //    return response.json();
+    //}
+    //return Promise.reject(`Ошибка ${response.status}`);
+    return response.json();
 }
 
 export function checkSuccess(jsonData) {
@@ -10,6 +11,6 @@ export function checkSuccess(jsonData) {
     if (success) {
         return Promise.resolve(data);
     } else {
-        return Promise.reject(`Ошибка ${data}`);
+        return Promise.reject(data.message);
     }
 }

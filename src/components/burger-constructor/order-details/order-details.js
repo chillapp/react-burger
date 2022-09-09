@@ -5,9 +5,14 @@ import Spinner from "../../spinner/spinner";
 import {useDispatch, useSelector} from "react-redux";
 import {createOrder} from "../../../services/actions/orders";
 import {constructorReset} from "../../../services/actions/constructor";
+import {Redirect, useLocation} from "react-router-dom";
 
 export default function OrderDetails() {
     const dispatch = useDispatch();
+
+    const location = useLocation();
+
+    const { user } = useSelector(store => store.auth);
 
     const { items: cart } = useSelector(store => store.constructor);
 
@@ -22,7 +27,18 @@ export default function OrderDetails() {
     }, [dispatch, success])
 
     // eslint-disable-next-line
-    React.useEffect(() => newOrder(cart.map(item => item._id)), []);
+    React.useEffect(() => {
+        if (user) newOrder(cart.map(item => item._id))
+    }, []);
+
+    if (!user) {
+        return <Redirect path to={{
+            pathname: '/login',
+            state: {
+                from: location.pathname
+            }
+        }} />;
+    }
 
     const orderDetails = (
         <div className={`${CommonStyles.flexColumn}`}>

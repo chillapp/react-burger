@@ -2,8 +2,9 @@ import React from "react";
 import styles from './icon-button.module.css'
 import {ListIcon, ProfileIcon, BurgerIcon, DeleteIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from "prop-types";
+import {NavLink} from "react-router-dom";
 
-export default function IconButton({ icon, click, children }) {
+export default function IconButton({ icon, navLink, click, children }) {
 
     const getIcon = () => {
         switch (icon) {
@@ -19,15 +20,27 @@ export default function IconButton({ icon, click, children }) {
         }
     }
 
-    return (
-        <button className={`${styles.iconButton} text_color_inactive`} onClick={click}>
-            {getIcon()}
-            <span className="text text_type_main-default">{children}</span>
-        </button>
-    );
+    if (navLink) {
+        return (
+            <NavLink exact={navLink === '/'} activeClassName={styles.active} to={navLink} className={`${styles.iconButton} text_color_inactive`}>
+                {getIcon()}
+                <span className="text text_type_main-default">{children}</span>
+            </NavLink>
+        );
+    } else {
+        return (
+            <button className={`${styles.iconButton} text_color_inactive`} onClick={click}>
+                {getIcon()}
+                <span className="text text_type_main-default">{children}</span>
+            </button>
+        );
+    }
+
+
 }
 
 IconButton.propTypes = {
+    navLink: PropTypes.string,
     icon: PropTypes.string.isRequired,
     click: PropTypes.func
 }
