@@ -13,6 +13,49 @@ const preloadedState = {
     constructor: {
         items: [],
         totalPrice: 0
+    },
+    auth: {
+        user: null,
+        accessToken: null,
+        refreshToken: null,
+        forgotPassword: {
+            data: null,
+            success: false,
+            request: false,
+            error: null
+        },
+        registerUser: {
+            data: null,
+            success: false,
+            request: false,
+            error: null
+        },
+        resetPassword: {
+            data: null,
+            success: false,
+            request: false,
+            error: null
+        },
+        loginUser: {
+            data: null,
+            success: false,
+            request: false,
+            error: null
+        },
+        authUser: {
+            success: false,
+            request: false,
+            isLoaded: false,
+        },
+        updateUser: {
+            success: false,
+            request: false,
+            error: null,
+        },
+        logoutUser: {
+            request: false,
+            success: false,
+        }
     }
 }
 

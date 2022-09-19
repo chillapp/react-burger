@@ -1,12 +1,11 @@
-import React from "react";
+import React, {useCallback} from "react";
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredients-item.module.css';
 import CommonStyles from '../../../styles/common.module.css';
 import ingredientType from "../../../utils/types";
-import Modal from "../../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import {useDrag} from "react-dnd";
+import {useHistory, useLocation} from "react-router-dom";
 
 export default function BurgerIngredientsItem({ data, selected }) {
     const [{ opacity }, dragRef] = useDrag({
@@ -17,14 +16,15 @@ export default function BurgerIngredientsItem({ data, selected }) {
         })
     });
 
-    const [detailsModal, setDetailsModal] = React.useState(false);
+    const history = useHistory();
+    const location = useLocation();
 
-    const showDetails = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        setDetailsModal(true);
-    }
-    const hideDetails = () => setDetailsModal(false);
+    const showDetails = useCallback(() => {
+        history.replace({
+            pathname: `ingredients/${data._id}`,
+            state: { background: location }
+        });
+    }, [history])
 
     return (
         <>
@@ -41,11 +41,6 @@ export default function BurgerIngredientsItem({ data, selected }) {
                     <span className={`${styles.name} pt-1`}>{data.name}</span>
                 </div>
             </div>
-            {detailsModal && (
-                <Modal isOpen={detailsModal} header='Детали ингредиента' onClose={hideDetails}>
-                    <IngredientDetails ingredient={data}/>
-                </Modal>
-            )}
         </>
     )
 }
