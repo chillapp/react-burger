@@ -1,6 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
-import {checkResponse, checkSuccess} from "../http";
-import {getApiUrl} from "../../components/app/app";
+import {checkResponse, checkSuccess, getApiUrl} from "../http";
 
 export interface IIngredient {
     _id: string

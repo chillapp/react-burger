@@ -1,9 +1,7 @@
 import React, {FC} from "react";
-import PropTypes from 'prop-types';
 import styles from './burger-constructor-bun-item.module.css';
 import commonStyles from '../../../styles/common.module.css';
 import {CurrencyIcon, LockIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientType from "../../../utils/types";
 import {IIngredient} from "../../../services/actions/ingredients";
 
 export const BurgerConstructorBunItem: FC<{ role: "top" | "bottom", bun?: IIngredient }> = ({ role, bun }) => {
@@ -27,12 +25,4 @@ export const BurgerConstructorBunItem: FC<{ role: "top" | "bottom", bun?: IIngre
             </div>
         </div>
     );
-}
-
-
-BurgerConstructorBunItem.propTypes = {
-    // @ts-ignore
-    bun: ingredientType,
-    // @ts-ignore
-    role: PropTypes.oneOf(['top', 'bottom']).isRequired
 }

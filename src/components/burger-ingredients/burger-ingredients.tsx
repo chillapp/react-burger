@@ -84,16 +84,16 @@ export const BurgerIngredients: FC = () => {
 
 
     let scrollEndTimeOut: NodeJS.Timeout | null = null;
-    const onScroll = (event: React.UIEvent<HTMLElement>) => {
+    const onScroll = (event: React.UIEvent<HTMLDivElement>) => {
         if (scrollEndTimeOut) clearTimeout(scrollEndTimeOut);
         scrollEndTimeOut = setTimeout(() => scrollEndHandler(event), 20);
     }
 
-    const scrollEndHandler = (e: React.UIEvent<HTMLElement>) => {
+    const scrollEndHandler = (e: React.UIEvent<HTMLDivElement>) => {
         const tabs = ['one', 'two', 'three'];
 
-        // @ts-ignore
-        const containerRect = e.target.getBoundingClientRect();
+        const scrollContainer = e.target as HTMLDivElement;
+        const containerRect = scrollContainer.getBoundingClientRect();
 
         const values = [];
 

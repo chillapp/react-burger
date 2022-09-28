@@ -3,7 +3,6 @@ import {IconButton} from "../../icon-button/icon-button";
 import styles from './burger-constructor-item.module.css';
 import commonStyles from '../../../styles/common.module.css';
 import {CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientType from "../../../utils/types";
 import {useDispatch, useSelector} from "react-redux";
 import {constructorDel, constructorReplace} from "../../../services/actions/constructor";
 import {useDrag, useDrop} from "react-dnd";
@@ -68,9 +67,4 @@ export const BurgerConstructorItem: FC<{ cartItem: IIngredient }> = ({ cartItem 
             <div className={styles.canDragDown} style={{display: dropToBottom}}></div>
         </li>
     );
-}
-
-BurgerConstructorItem.propTypes = {
-    // @ts-ignore
-    cartItem: ingredientType.isRequired,
 }

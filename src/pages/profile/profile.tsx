@@ -42,7 +42,6 @@ export default function ProfilePage() {
                         </li>
                         <li className={`p-2 pl-0`}>
                             <span className={`text_type_main-medium text_color_primary`}>
-                                {/*@ts-ignore*/}
                                 <Button type='secondary' size='large' onClick={logout}>Выход</Button>
                             </span>
                         </li>

@@ -1,7 +1,6 @@
 import React, {FC, ReactNode} from "react";
 import styles from './icon-button.module.css'
 import {ListIcon, ProfileIcon, BurgerIcon, DeleteIcon} from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from "prop-types";
 import {NavLink} from "react-router-dom";
 
 interface IIconButton {
@@ -44,10 +43,4 @@ export const IconButton: FC<IIconButton> = ({ icon, navLink, click, children }) 
     }
 
 
-}
-
-IconButton.propTypes = {
-    navLink: PropTypes.string,
-    icon: PropTypes.string.isRequired,
-    click: PropTypes.func
 }

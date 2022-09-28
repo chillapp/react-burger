@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from "react";
+import React, {FC, FormEvent, useCallback, useEffect, useState} from "react";
 import CommonStyles from "../../styles/common.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
@@ -29,7 +29,9 @@ export const ResetPasswordPage: FC = () => {
 
     const authState = useSelector<IStore>(store => store.auth) as IAuth;
 
-    const resetPasswordCallback = useCallback(() => {
+    const resetPasswordCallback = useCallback((e: FormEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
         const payload: IResetPasswordPayload = {
             password: newPwd,
             token: emailCode
@@ -45,47 +47,42 @@ export const ResetPasswordPage: FC = () => {
         return <Redirect to="/login" />;
     }
 
-    // @ts-ignore
-    // @ts-ignore
     return (
-        <>
-            <section className={`
-                ${CommonStyles.flexColumn} 
-                ${CommonStyles.flexAICenter} 
-                ${CommonStyles.flexJCCenter} 
-                ${CommonStyles.flexFill}
-            `}>
-                <span className={`text_type_main-default text_color_primary`}>Восстановление пароля</span>
-                <div className={`mt-6`}>
-                    <Input
-                        disabled={authState.resetPassword.request}
-                        value={newPwd}
-                        type={pwdType}
-                        placeholder={'Введите новый пароль'}
-                        onChange={e => setNewPwd(e.target.value)}
-                        icon={'ShowIcon'}
-                        onIconClick={showPassword}
-                    />
-                </div>
-                <div className={`mt-6`}>
-                    <Input
-                        disabled={authState.resetPassword.request}
-                        value={emailCode}
-                        type={'text'}
-                        placeholder={'Введите код из письма'}
-                        onChange={e => setEmailCode(e.target.value)}
-                    />
-                </div>
-                {authState.resetPassword.error && <span className='text_type_main-small text_color_error mt-6'>{authState.resetPassword.error}</span>}
-                <div className={`mt-6`}>
-                    {/*@ts-ignore*/}
-                    <Button disabled={authState.resetPassword.request} onClick={resetPasswordCallback}>Восстановить</Button>
-                </div>
-                <div className={`mt-20`}>
-                    <span className={`text_type_main-default text_color_inactive`}>Вспомнили пароль? </span>
-                    <Link to={'/login'} className={`text_type_main-default text_color_accent ${CommonStyles.textDecorationNone}`}>Войти</Link>
-                </div>
-            </section>
-        </>
+        <form className={`
+            ${CommonStyles.flexColumn} 
+            ${CommonStyles.flexAICenter} 
+            ${CommonStyles.flexJCCenter} 
+            ${CommonStyles.flexFill}
+        `} onSubmit={resetPasswordCallback}>
+            <span className={`text_type_main-default text_color_primary`}>Восстановление пароля</span>
+            <div className={`mt-6`}>
+                <Input
+                    disabled={authState.resetPassword.request}
+                    value={newPwd}
+                    type={pwdType}
+                    placeholder={'Введите новый пароль'}
+                    onChange={e => setNewPwd(e.target.value)}
+                    icon={'ShowIcon'}
+                    onIconClick={showPassword}
+                />
+            </div>
+            <div className={`mt-6`}>
+                <Input
+                    disabled={authState.resetPassword.request}
+                    value={emailCode}
+                    type={'text'}
+                    placeholder={'Введите код из письма'}
+                    onChange={e => setEmailCode(e.target.value)}
+                />
+            </div>
+            {authState.resetPassword.error && <span className='text_type_main-small text_color_error mt-6'>{authState.resetPassword.error}</span>}
+            <div className={`mt-6`}>
+                <Button htmlType="submit" disabled={authState.resetPassword.request}>Восстановить</Button>
+            </div>
+            <div className={`mt-20`}>
+                <span className={`text_type_main-default text_color_inactive`}>Вспомнили пароль? </span>
+                <Link to={'/login'} className={`text_type_main-default text_color_accent ${CommonStyles.textDecorationNone}`}>Войти</Link>
+            </div>
+        </form>
     );
 }

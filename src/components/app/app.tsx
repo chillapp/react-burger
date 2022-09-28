@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren, ReactElement} from 'react';
 import AppHeader from "../app-header/app-header";
 import {BurgerPage} from "../burger-page/burger-page";
 import {BrowserRouter as Router, Route, Switch, useHistory, useLocation} from "react-router-dom";
@@ -13,7 +13,11 @@ import {IngredientDetails} from "../burger-ingredients/ingredient-details/ingred
 import {Modal} from "../modal/modal";
 import * as H from 'history';
 
-export const getApiUrl = (endpoint: string): string => `https://norma.nomoreparties.space/api/${endpoint}`;
+declare module 'react' {
+    interface FunctionComponent<P = {}> {
+        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+    }
+}
 
 interface ILocationState {
     background: H.Location
@@ -24,7 +28,7 @@ export default function App() {
         const location = useLocation<ILocationState>();
         const history = useHistory();
 
-        let background = location.state && location.state.background;
+        const background = location.state && location.state.background;
 
         const handleModalClose = () => {
             history.replace('/');

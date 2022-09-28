@@ -1,6 +1,5 @@
 import {createAction} from "@reduxjs/toolkit";
-import {getApiUrl} from "../../components/app/app";
-import {checkResponse, checkSuccess} from "../http";
+import {checkResponse, checkSuccess, getApiUrl} from "../http";
 import {getCookie, setCookie} from "../../utils/common";
 import {IResetPasswordPayload} from "../../pages/reset-password/reset-password";
 import {IUser} from "../store";

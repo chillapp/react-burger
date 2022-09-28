@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from "react";
+import React, {FC, FormEvent, useCallback, useEffect, useState} from "react";
 import CommonStyles from "../../styles/common.module.css"
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect, useLocation} from "react-router-dom";
@@ -17,15 +17,18 @@ export interface ILoginRequest {
 export const LoginPage: FC = () => {
     const dispatch = useDispatch();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [pwdType, setPwdType] = useState<"password" | "text">('password');
+
 
     useEffect(() => {
         dispatch(authUser() as AnyAction);
     }, []);
 
-    const loginUserCallback = useCallback(() => {
+    const loginUserCallback = useCallback((e: FormEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
         const payload: ILoginRequest = {
             email: email,
             password: password
@@ -57,10 +60,11 @@ export const LoginPage: FC = () => {
                         <Spinner extraClass={`${commonStyles.flexItemASCenter}`}/>
                     )
                     : (
-                        <>
+                        <form onSubmit={loginUserCallback}>
                             <span className={`text_type_main-default text_color_primary`}>Вход</span>
                             <div className={`mt-6`}>
                                 <Input
+                                    name={"email"}
                                     disabled={authState.loginUser.request}
                                     value={email}
                                     type={'email'}
@@ -70,6 +74,7 @@ export const LoginPage: FC = () => {
                             </div>
                             <div className={`mt-6`}>
                                 <Input
+                                    name={"password"}
                                     disabled={authState.loginUser.request}
                                     value={password}
                                     type={pwdType}
@@ -81,8 +86,7 @@ export const LoginPage: FC = () => {
                             </div>
                             {authState.loginUser.error && <span className='text_type_main-small text_color_error mt-6'>{authState.loginUser.error}</span>}
                             <div className={`mt-6`}>
-                                {/*@ts-ignore*/}
-                                <Button disabled={authState.loginUser.request} onClick={loginUserCallback}>Войти</Button>
+                                <Button htmlType="submit" disabled={authState.loginUser.request}>Войти</Button>
                             </div>
                             <div className={`mt-20`}>
                                 <span className={`text_type_main-default text_color_inactive`}>Вы - новый пользователь? </span>
@@ -92,7 +96,7 @@ export const LoginPage: FC = () => {
                                 <span className={`text_type_main-default text_color_inactive`}>Забыли пароль? </span>
                                 <Link to='/forgot-password' className={`text_type_main-default text_color_accent ${CommonStyles.textDecorationNone}`}>Восстановить пароль</Link>
                             </div>
-                        </>
+                        </form>
                     )
                 }
             </section>

@@ -4,15 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "../../spinner/spinner";
 import commonStyles from "../../../styles/common.module.css";
 import React, {FC} from "react";
-import {getIngredients, IIngredient} from "../../../services/actions/ingredients";
+import {IIngredient} from "../../../services/actions/ingredients";
 import {IIngredients, IStore} from "../../../services/store";
-import {AnyAction} from "redux";
 
 export const IngredientDetails: FC = () => {
-    const dispatch = useDispatch();
     let ingredient: IIngredient | null = null;
     const { id: ingredientId } = useParams<{ id: string }>();
-    const { loading, items } = useSelector<IStore>(store => store.ingredients) as IIngredients;
+    const { items } = useSelector<IStore>(store => store.ingredients) as IIngredients;
     const ingredientIndex = items.findIndex(item => item._id === ingredientId);
 
     if (ingredientIndex >= 0) {
@@ -48,12 +46,7 @@ export const IngredientDetails: FC = () => {
                 </div>
             </div>
         </div>;
-    } else {
-        if (!loading) {
-            dispatch(getIngredients() as AnyAction);
-        }
     }
-
     return (
         <section className={`${commonStyles.flexRow} ${commonStyles.flexJCCenter} ${commonStyles.page} pb-4`}>
             {content}

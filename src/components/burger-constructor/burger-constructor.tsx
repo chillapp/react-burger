@@ -52,7 +52,6 @@ export const BurgerConstructor: FC = () => {
                     <span className='text text_type_digits-medium'>{totalPrice}</span>
                     <CurrencyIcon type='primary'/>
                     <div className='ml-10'>
-                        {/*@ts-ignore*/}
                         <Button onClick={showCreateOrderModal}>Оформить заказ</Button>
                     </div>
                 </div>

@@ -1,6 +1,5 @@
 import {createAction} from "@reduxjs/toolkit";
-import {getApiUrl} from "../../components/app/app";
-import {checkResponse, checkSuccess} from "../http";
+import {checkResponse, checkSuccess, getApiUrl} from "../http";
 
 export const orderRequest = createAction('ORDER/REQUEST');
 export const orderSuccess = createAction<{ name: string, number: number} | null>('ORDER/SUCCESS');

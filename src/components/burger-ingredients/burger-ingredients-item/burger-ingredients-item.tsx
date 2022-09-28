@@ -1,9 +1,7 @@
 import React, {FC, useCallback} from "react";
-import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredients-item.module.css';
 import CommonStyles from '../../../styles/common.module.css';
-import ingredientType from "../../../utils/types";
 import {useDrag} from "react-dnd";
 import {useHistory, useLocation} from "react-router-dom";
 import {IIngredient} from "../../../services/actions/ingredients";
@@ -44,11 +42,4 @@ export const BurgerIngredientsItem: FC<{ data: IIngredient, selected: number }> 
             </div>
         </>
     )
-}
-
-
-BurgerIngredientsItem.propTypes = {
-    // @ts-ignore
-    data: ingredientType.isRequired,
-    selected: PropTypes.number.isRequired
 }

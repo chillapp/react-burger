@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from "react";
+import React, {FC, FormEvent, useCallback, useEffect, useState} from "react";
 import CommonStyles from "../../styles/common.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
@@ -23,7 +23,9 @@ export const RegisterPage: FC = () => {
         setPwdType(pwdType === 'password' ? 'text' : 'password')
     }
 
-    const registerUserCallback = useCallback(() => {
+    const registerUserCallback = useCallback((e: FormEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
         const payload: IUser = {
             email: email,
             password: password,
@@ -39,53 +41,50 @@ export const RegisterPage: FC = () => {
     }
 
     return (
-        <>
-            <section className={`
-                ${CommonStyles.flexColumn} 
-                ${CommonStyles.flexAICenter} 
-                ${CommonStyles.flexJCCenter} 
-                ${CommonStyles.flexFill}
-            `}>
-                <span className={`text_type_main-default text_color_primary`}>Регистрация</span>
-                <div className={`mt-6`}>
-                    <Input
-                        disabled={authState.registerUser.request}
-                        value={name}
-                        type={'text'}
-                        placeholder={'Имя'}
-                        onChange={e => setName(e.target.value)}
-                    />
-                </div>
-                <div className={`mt-6`}>
-                    <Input
-                        disabled={authState.registerUser.request}
-                        value={email}
-                        type={'email'}
-                        placeholder={'E-mail'}
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className={`mt-6`}>
-                    <Input
-                        disabled={authState.registerUser.request}
-                        value={password}
-                        type={pwdType}
-                        placeholder={'Пароль'}
-                        icon={'ShowIcon'}
-                        onIconClick={showPassword}
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                </div>
-                {authState.registerUser.error && <span className='text_type_main-small text_color_error mt-6'>{authState.registerUser.error}</span>}
-                <div className={`mt-6`}>
-                    {/*@ts-ignore*/}
-                    <Button disabled={authState.registerUser.request} onClick={registerUserCallback}>Зарегистрироваться</Button>
-                </div>
-                <div className={`mt-20`}>
-                    <span className={`text_type_main-default text_color_inactive`}>Уже зарегистрированы? </span>
-                    <Link to={'/login'} className={`text_type_main-default text_color_accent ${CommonStyles.textDecorationNone}`}>Войти</Link>
-                </div>
-            </section>
-        </>
+        <form className={`
+            ${CommonStyles.flexColumn} 
+            ${CommonStyles.flexAICenter} 
+            ${CommonStyles.flexJCCenter} 
+            ${CommonStyles.flexFill}
+        `} onSubmit={registerUserCallback}>
+            <span className={`text_type_main-default text_color_primary`}>Регистрация</span>
+            <div className={`mt-6`}>
+                <Input
+                    disabled={authState.registerUser.request}
+                    value={name}
+                    type={'text'}
+                    placeholder={'Имя'}
+                    onChange={e => setName(e.target.value)}
+                />
+            </div>
+            <div className={`mt-6`}>
+                <Input
+                    disabled={authState.registerUser.request}
+                    value={email}
+                    type={'email'}
+                    placeholder={'E-mail'}
+                    onChange={e => setEmail(e.target.value)}
+                />
+            </div>
+            <div className={`mt-6`}>
+                <Input
+                    disabled={authState.registerUser.request}
+                    value={password}
+                    type={pwdType}
+                    placeholder={'Пароль'}
+                    icon={'ShowIcon'}
+                    onIconClick={showPassword}
+                    onChange={e => setPassword(e.target.value)}
+                />
+            </div>
+            {authState.registerUser.error && <span className='text_type_main-small text_color_error mt-6'>{authState.registerUser.error}</span>}
+            <div className={`mt-6`}>
+                <Button htmlType="submit" disabled={authState.registerUser.request}>Зарегистрироваться</Button>
+            </div>
+            <div className={`mt-20`}>
+                <span className={`text_type_main-default text_color_inactive`}>Уже зарегистрированы? </span>
+                <Link to={'/login'} className={`text_type_main-default text_color_accent ${CommonStyles.textDecorationNone}`}>Войти</Link>
+            </div>
+        </form>
     );
 }
