@@ -1,6 +1,6 @@
 import CommonStyles from '../../../styles/common.module.css'
 import {useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {Spinner} from "../../spinner/spinner";
 import commonStyles from "../../../styles/common.module.css";
 import React, {FC} from "react";
