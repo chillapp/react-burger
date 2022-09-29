@@ -12,6 +12,9 @@ import {Page404} from "../../pages/404/404";
 import {IngredientDetails} from "../burger-ingredients/ingredient-details/ingredient-details";
 import {Modal} from "../modal/modal";
 import * as H from 'history';
+import {useDispatch} from "react-redux";
+import {getIngredients} from "../../services/actions/ingredients";
+import {AnyAction} from "redux";
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -33,6 +36,11 @@ export default function App() {
         const handleModalClose = () => {
             history.replace('/');
         };
+
+        const dispatch = useDispatch();
+        React.useEffect(() => {
+            dispatch(getIngredients() as AnyAction)
+        },[dispatch]);
 
         return (
             <>

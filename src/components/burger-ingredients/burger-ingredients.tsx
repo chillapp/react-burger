@@ -125,7 +125,6 @@ export const BurgerIngredients: FC = () => {
         <section className={`pt-10 ${styles.content} ${commonStyles.flexColumn} ${commonStyles.flexFill}`}>
             <span className='text text_type_main-large'>Соберите бургер</span>
             <div className={`pt-5 ${commonStyles.flexRow} ${commonStyles.flexFill}`}>
-                {/*@ts-ignore*/}
                 <Tab
                     value="one"
                     active={currentTab === 'one'}
@@ -133,7 +132,6 @@ export const BurgerIngredients: FC = () => {
                 >
                     Булки
                 </Tab>
-                {/*@ts-ignore*/}
                 <Tab
                     value="two"
                     active={currentTab === 'two'}
@@ -141,7 +139,6 @@ export const BurgerIngredients: FC = () => {
                 >
                     Соусы
                 </Tab>
-                {/*@ts-ignore*/}
                 <Tab
                     value="three"
                     active={currentTab === 'three'}
