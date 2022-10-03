@@ -1,30 +1,46 @@
-import React from 'react';
+import React, {PropsWithChildren, ReactElement} from 'react';
 import AppHeader from "../app-header/app-header";
-import BurgerPage from "../burger-page/burger-page";
+import {BurgerPage} from "../burger-page/burger-page";
 import {BrowserRouter as Router, Route, Switch, useHistory, useLocation} from "react-router-dom";
-import LoginPage from "../../pages/login/login";
-import RegisterPage from "../../pages/register/register";
-import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
-import ResetPasswordPage from "../../pages/reset-password/reset-password";
+import {LoginPage} from "../../pages/login/login";
+import {RegisterPage} from "../../pages/register/register";
+import {ForgotPasswordPage} from "../../pages/forgot-password/forgot-password";
+import {ResetPasswordPage} from "../../pages/reset-password/reset-password";
 import {ProtectedRoute} from "../protected-route/protected-route";
 import ProfilePage from "../../pages/profile/profile";
-import Page404 from "../../pages/404/404";
-import IngredientDetails from "../burger-ingredients/ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
+import {Page404} from "../../pages/404/404";
+import {IngredientDetails} from "../burger-ingredients/ingredient-details/ingredient-details";
+import {Modal} from "../modal/modal";
+import * as H from 'history';
+import {useDispatch} from "react-redux";
+import {getIngredients} from "../../services/actions/ingredients";
+import {AnyAction} from "redux";
 
-// @ts-ignore
-export const getApiUrl = endpoint => `https://norma.nomoreparties.space/api/${endpoint}`;
+declare module 'react' {
+    interface FunctionComponent<P = {}> {
+        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+    }
+}
+
+interface ILocationState {
+    background: H.Location
+}
 
 export default function App() {
     const ModalSwitch = () => {
-        const location = useLocation();
+        const location = useLocation<ILocationState>();
         const history = useHistory();
-        // @ts-ignore
-        let background = location.state && location.state.background;
+
+        const background = location.state && location.state.background;
 
         const handleModalClose = () => {
             history.replace('/');
         };
+
+        const dispatch = useDispatch();
+        React.useEffect(() => {
+            dispatch(getIngredients() as AnyAction)
+        },[dispatch]);
 
         return (
             <>
@@ -45,7 +61,7 @@ export default function App() {
                     <Route
                         path='/ingredients/:id'
                         children={
-                            <Modal onClose={handleModalClose}>
+                            <Modal header={""} onClose={handleModalClose}>
                                 <IngredientDetails />
                             </Modal>
                         }
