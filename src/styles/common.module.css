@@ -4,6 +4,12 @@
     flex-direction: row;
 }
 
+.flexRowReverse {
+    display: flex;
+    position: relative;
+    flex-direction: row-reverse;
+}
+
 .flexColumn {
     display: flex;
     position: relative;
@@ -26,6 +32,10 @@
     justify-content: right;
 }
 
+.flexJCLeft {
+    justify-content: left;
+}
+
 .flexJCAround {
     justify-content: space-around;
 }
@@ -40,6 +50,14 @@
 
 .flexItemASCenter {
     align-self: center;
+}
+
+.flexItemASStart {
+    align-self: start;
+}
+
+.flexWrap {
+    flex-wrap: wrap;
 }
 
 .panelColor {
@@ -57,9 +75,21 @@
     height: 100%;
 }
 
+.hFull {
+    height: 100%;
+}
+
+.wFull {
+    width: 100%;
+}
+
 .button {
     border: unset;
     background: unset;
+    cursor: pointer;
+}
+
+.cursorPointer {
     cursor: pointer;
 }
 
@@ -70,3 +100,13 @@
 .textDecorationNone {
     text-decoration: none;
 }
+
+.borderRadius24 {
+    border-radius: 24px;
+}
+
+.overflowAuto {
+    overflow: auto;
+}
+
+

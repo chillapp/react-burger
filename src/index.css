@@ -4,8 +4,8 @@ html, body {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -19,7 +19,22 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
+}
+
+.scrollerY {
+  overflow-y: auto;
+}
+
+.scrollerY::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2F2F37;
+  border-radius: 4px;
+}
+
+.scrollerY::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+  border-radius: 4px;
 }
 
 .scrollerY {

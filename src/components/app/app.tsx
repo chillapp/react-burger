@@ -15,6 +15,9 @@ import * as H from 'history';
 import {useDispatch} from "react-redux";
 import {getIngredients} from "../../services/actions/ingredients";
 import {AnyAction} from "redux";
+import {FeedPage} from "../../pages/feed/feed";
+import {FeedOrderDetails} from "../feed-order-details/feed-order-details";
+import {ProfileOrdersPage} from "../../pages/profile/orders/orders";
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -33,8 +36,8 @@ export default function App() {
 
         const background = location.state && location.state.background;
 
-        const handleModalClose = () => {
-            history.replace('/');
+        const handleModalClose = (path: string) => {
+            history.replace(path);
         };
 
         const dispatch = useDispatch();
@@ -47,6 +50,8 @@ export default function App() {
                 <AppHeader/>
                 <Switch location={background || location}>
                     <Route exact path='/' component={BurgerPage}/>
+                    <Route exact path='/feed' component={FeedPage}/>
+                    <Route path='/feed/:id' component={FeedPage}/>
                     <ProtectedRoute path='/profile' component={ProfilePage}/>
                     <Route path='/ingredients/:id' component={IngredientDetails}/>
                     <Route path='/login' component={LoginPage}/>
@@ -61,8 +66,28 @@ export default function App() {
                     <Route
                         path='/ingredients/:id'
                         children={
-                            <Modal header={""} onClose={handleModalClose}>
+                            <Modal header={""} onClose={handleModalClose.bind(null, "/")}>
                                 <IngredientDetails />
+                            </Modal>
+                        }
+                    />
+                )}
+                {background && (
+                    <Route
+                        path='/feed/:id'
+                        children={
+                            <Modal header={""} onClose={handleModalClose.bind(null, "/feed")}>
+                                <FeedOrderDetails />
+                            </Modal>
+                        }
+                    />
+                )}
+                {background && (
+                    <Route
+                        path='/profile/orders/:id'
+                        children={
+                            <Modal header={""} onClose={handleModalClose.bind(null, "/profile/orders")}>
+                                <FeedOrderDetails />
                             </Modal>
                         }
                     />

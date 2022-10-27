@@ -21,3 +21,5 @@ export function checkSuccess(jsonData: IResponse) {
 }
 
 export const getApiUrl = (endpoint: string): string => `https://norma.nomoreparties.space/api/${endpoint}`;
+
+export const getWsApiUrl = (endpoint: string): string => `wss://norma.nomoreparties.space/${endpoint}`;

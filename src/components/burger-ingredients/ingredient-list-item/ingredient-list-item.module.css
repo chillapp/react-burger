@@ -1,0 +1,8 @@
+.ingredientLogo {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid blueviolet;
+    background: #1C1C21;
+}

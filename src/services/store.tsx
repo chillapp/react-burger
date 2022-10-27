@@ -4,14 +4,14 @@ import {rootReducer} from "./reducers";
 import {IResetPasswordPayload} from "../pages/reset-password/reset-password";
 import {ILoginRequest} from "../pages/login/login";
 import {IIngredient} from "./actions/ingredients";
-
-
+import {IFeed} from "../pages/feed/feed";
 
 export interface IStore {
     ingredients: IIngredients
     constructor: IConstructor
     orders: IOrders
-    auth: IAuth
+    auth: IAuth,
+    feed: IFeed
 }
 
 export interface IIngredients {
@@ -116,6 +116,12 @@ const preloadedState: IStore = {
             success: false,
             error: null,
         }
+    },
+    feed: {
+        orders: [],
+        success: false,
+        total: 0,
+        totalToday: 0
     }
 }
 
