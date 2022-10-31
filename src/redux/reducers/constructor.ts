@@ -25,7 +25,7 @@ export const constructorReducer = (state = constructorInitialState, action: TCon
             newCart.push({ ...action.ingredient });
             return {
                 ...state,
-                cart: newCart.map((item, index) => ({ ...item, uuid: uuidV4() })),
+                cart: newCart.map((item) => ({ ...item, uuid: uuidV4() })),
                 totalPrice: newCart.reduce((total, item) => total + item.price, 0)
             };
         }
