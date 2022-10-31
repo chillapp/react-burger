@@ -2,17 +2,11 @@ import React, {FC, FormEvent, useCallback, useEffect, useState} from "react";
 import CommonStyles from "../../styles/common.module.css"
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect, useLocation} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {authUser, loginUser} from "../../services/actions/auth";
 import {Spinner} from "../../components/spinner/spinner";
 import commonStyles from "../../styles/common.module.css";
-import {AnyAction} from "redux";
-import {IAuth, IStore} from "../../services/store";
-
-export interface ILoginRequest {
-    email: string,
-    password: string
-}
+import {useDispatch, useSelector} from "../../redux/hooks";
+import {TLoginRequest} from "../../redux/types/user";
+import {userAuthThunk, userLoginThunk} from "../../redux/actions/user";
 
 export const LoginPage: FC = () => {
     const dispatch = useDispatch();
@@ -21,32 +15,35 @@ export const LoginPage: FC = () => {
     const [password, setPassword] = useState<string>('');
     const [pwdType, setPwdType] = useState<"password" | "text">('password');
 
-
     useEffect(() => {
-        dispatch(authUser() as AnyAction);
-    }, []);
+        dispatch(userAuthThunk());
+    }, [dispatch]);
 
     const loginUserCallback = useCallback((e: FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        const payload: ILoginRequest = {
+        const payload: TLoginRequest = {
             email: email,
             password: password
         }
-        dispatch(loginUser(payload) as AnyAction);
-    }, [email, password])
+        dispatch(userLoginThunk(payload));
+    }, [dispatch, email, password])
 
     const showPassword = () => {
         setPwdType(pwdType === 'password' ? 'text' : 'password')
     }
 
-    const authState = useSelector<IStore>(store => store.auth) as IAuth;
+    const {
+        user,
+        userAuthRequest,
+        userLoginRequest,
+        userLoginFailure,
+    } = useSelector(store => store.user);
 
     const location = useLocation<{ from: string | undefined }>();
-    if (authState.user) {
+    if (user) {
         return <Redirect to={location.state?.from || '/'} />;
     }
-
     return (
             <section className={`
                 ${CommonStyles.flexColumn} 
@@ -55,7 +52,7 @@ export const LoginPage: FC = () => {
                 ${CommonStyles.flexFill}
             `}>
                 {
-                    !authState.authUser.isLoaded
+                    userLoginRequest || userAuthRequest
                     ? (
                         <Spinner extraClass={`${commonStyles.flexItemASCenter}`}/>
                     )
@@ -65,7 +62,7 @@ export const LoginPage: FC = () => {
                             <div className={`mt-6`}>
                                 <Input
                                     name={"email"}
-                                    disabled={authState.loginUser.request}
+                                    disabled={userLoginRequest}
                                     value={email}
                                     type={'email'}
                                     placeholder={'E-mail'}
@@ -75,7 +72,7 @@ export const LoginPage: FC = () => {
                             <div className={`mt-6`}>
                                 <Input
                                     name={"password"}
-                                    disabled={authState.loginUser.request}
+                                    disabled={userLoginRequest}
                                     value={password}
                                     type={pwdType}
                                     placeholder={'Пароль'}
@@ -84,9 +81,9 @@ export const LoginPage: FC = () => {
                                     onChange={e => setPassword(e.target.value)}
                                 />
                             </div>
-                            {authState.loginUser.error && <span className='text_type_main-small text_color_error mt-6'>{authState.loginUser.error}</span>}
+                            {userLoginFailure && <span className='text_type_main-small text_color_error mt-6'>Ошибка авторизации</span>}
                             <div className={`mt-6`}>
-                                <Button htmlType="submit" disabled={authState.loginUser.request}>Войти</Button>
+                                <Button htmlType="submit" disabled={userLoginRequest}>Войти</Button>
                             </div>
                             <div className={`mt-20`}>
                                 <span className={`text_type_main-default text_color_inactive`}>Вы - новый пользователь? </span>

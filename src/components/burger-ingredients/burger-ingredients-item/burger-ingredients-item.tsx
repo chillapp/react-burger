@@ -4,9 +4,9 @@ import styles from './burger-ingredients-item.module.css';
 import CommonStyles from '../../../styles/common.module.css';
 import {useDrag} from "react-dnd";
 import {useHistory, useLocation} from "react-router-dom";
-import {IIngredient} from "../../../services/actions/ingredients";
+import {TIngredient} from "../../../redux/types/ingredients";
 
-export const BurgerIngredientsItem: FC<{ data: IIngredient, selected: number }> = ({ data, selected }) => {
+export const BurgerIngredientsItem: FC<{ data: TIngredient, selected: number }> = ({ data, selected }) => {
     const [{ opacity }, dragRef] = useDrag({
         type: 'ingredient',
         item: { ...data },
@@ -23,7 +23,7 @@ export const BurgerIngredientsItem: FC<{ data: IIngredient, selected: number }> 
             pathname: `ingredients/${data._id}`,
             state: { background: location }
         });
-    }, [history])
+    }, [data._id, history, location])
 
     return (
         <>

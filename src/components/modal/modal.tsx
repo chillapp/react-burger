@@ -11,6 +11,7 @@ const modalRoot = document.getElementById("react-modals");
 export const Modal: FC<{header: string, children: ReactNode, onClose: () => void}> = ({ header, children, onClose }) => {
 
     if (modalRoot === null) {
+        // eslint-disable-next-line no-throw-literal
         throw "modal root is not implemented";
     }
 
@@ -20,7 +21,7 @@ export const Modal: FC<{header: string, children: ReactNode, onClose: () => void
         };
         document.addEventListener('keyup', closeByEsc);
         return () => document.removeEventListener('keyup', closeByEsc);
-    }, []);
+    }, [onClose]);
 
     return ReactDOM.createPortal(
         <>

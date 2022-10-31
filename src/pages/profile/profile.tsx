@@ -3,27 +3,27 @@ import styles from "./profile.module.css";
 import commonStyles from "../../styles/common.module.css"
 import {ProfileProfilePage} from "./profile/profile";
 import {ProfileOrdersPage} from "./orders/orders";
-import {useDispatch, useSelector} from "react-redux";
-import {logoutUser} from "../../services/actions/auth";
-import {IAuth, IStore} from "../../services/store";
-import {AnyAction} from "redux";
+import {useDispatch, useSelector} from "../../redux/hooks";
+import {userLogoutThunk} from "../../redux/actions/user";
+import {setCookie} from "../../utils/common";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
 
-    const authState = useSelector<IStore>(store => store.auth) as IAuth;
+    const { userLogoutSuccess } = useSelector(store => store.user);
 
     const location = useLocation();
 
     const pathParts = location.pathname.split('/');
 
-
-    if (!authState.user && authState.logoutUser.success) {
-        return <Redirect to="/login"/>;
+    const logout = () => {
+        dispatch(userLogoutThunk());
     }
 
-    const logout = () => {
-        dispatch(logoutUser() as AnyAction);
+    if (userLogoutSuccess) {
+        localStorage.removeItem("refreshToken");
+        setCookie("accessToken", null, { expired: -1 });
+        return <Redirect to="/login"/>;
     }
 
     return (

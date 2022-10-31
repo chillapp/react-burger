@@ -109,4 +109,9 @@
     overflow: auto;
 }
 
+.overflowXHidden {
+    overflow-x: hidden;
+}
+
+
 

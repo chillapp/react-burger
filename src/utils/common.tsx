@@ -9,6 +9,9 @@ export function jsonToQuery(json: any) {
 
 export function setCookie(name: string, value: string | null, props?: any) {
     props = props || {};
+    if (!props.path) {
+        props.path = "/";
+    }
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
         const d = new Date();

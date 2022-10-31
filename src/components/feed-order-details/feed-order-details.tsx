@@ -1,20 +1,18 @@
 import {FC, useMemo} from "react";
-import {useSelector} from "react-redux";
-import {IIngredients, IStore} from "../../services/store";
-import {IFeed} from "../../pages/feed/feed";
 import {useParams} from "react-router-dom";
 import commonStyles from "../../styles/common.module.css";
 import styles from "./feed-order-details.module.css"
 import {IngredientListItem} from "../burger-ingredients/ingredient-list-item/ingredient-list-item";
+import {useSelector} from "../../redux/hooks";
 
 
-export const FeedOrderDetails: FC = () => {
+export const FeedOrderDetails: FC<{storeKey: "commonFeed" | "profileFeed"}> = ({storeKey}) => {
     const { id: orderNumber } = useParams<{ id: string }>();
-    const feedData = useSelector<IStore>(store => store.feed) as IFeed;
-    const orderIndex = feedData.orders.findIndex(item => item.number === parseInt(orderNumber, 10));
-    const order = feedData.orders[orderIndex] || null;
+    const feed = useSelector(store => store.feed[storeKey]);
+    const orderIndex = feed.orders.findIndex(item => item.number === parseInt(orderNumber, 10));
+    const order = feed.orders[orderIndex] || null;
 
-    let statusName = "";
+   let statusName = "";
     switch (order?.status) {
         case "created":
             statusName = "Создан";
@@ -27,9 +25,11 @@ export const FeedOrderDetails: FC = () => {
             break;
     }
 
-    const { items: data } = useSelector<IStore>(store => store.ingredients) as IIngredients;
-    const ingredients = useMemo(() => data.filter(item => order?.ingredients.indexOf(item._id) >= 0), [data, order]);
-    const ingredientsEl = useMemo(() => ingredients.map(item => <IngredientListItem ingredient={item}/>), [ingredients]);
+    const { rows } = useSelector(store => store.ingredients);
+    const ingredients = useMemo(() => rows.filter(item => order?.ingredients.indexOf(item._id) >= 0), [rows, order]);
+    const ingredientsEl = useMemo(() => ingredients.map((item, index) => {
+        return <IngredientListItem key={index} ingredient={item}/>
+    }), [ingredients]);
     return (
         <div className={`${commonStyles.flexColumn} ${commonStyles.flexJCCenter} ${commonStyles.flexAICenter}`}>
             <span className="text text_type_digits-default">#{orderNumber}</span>

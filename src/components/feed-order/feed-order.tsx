@@ -1,19 +1,18 @@
 import React, {FC, useCallback} from "react";
-import {IFeedOrder} from "../../pages/feed/feed";
 import commonStyles from '../../styles/common.module.css';
 import styles from './feed-order.module.css';
 import Moment from "react-moment";
 import 'moment/locale/ru';
-import {useSelector} from "react-redux";
-import {IIngredients, IStore} from "../../services/store";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useHistory, useLocation} from "react-router-dom";
+import {useSelector} from "../../redux/hooks";
+import {TFeedOrder} from "../../redux/types/feed";
 
-export const FeedOrder: FC<{ feedOrder: IFeedOrder }> = ({ feedOrder }) => {
-    const { items: data } = useSelector<IStore>(store => store.ingredients) as IIngredients;
-    const ingredients = data.filter(item => feedOrder.ingredients.indexOf(item._id) >= 0);
+export const FeedOrder: FC<{ feedOrder: TFeedOrder }> = ({ feedOrder }) => {
+    const { rows } = useSelector(store => store.ingredients)
+    const ingredients = rows.filter(item => feedOrder.ingredients.indexOf(item._id) >= 0);
     const totalPrice = React.useMemo(() => ingredients.reduce((acc, item) => acc + item.price, 0), [ingredients]);
-    const imgs = React.useMemo(() => ingredients.map(item => (<img key={item._id} className={`${styles.ingredientLogo}`} src={item.image_mobile} />)), [ingredients]);
+    const imgs = React.useMemo(() => ingredients.map(item => (<img key={item._id} className={`${styles.ingredientLogo}`} src={item.image_mobile}  alt={""}/>)), [ingredients]);
 
     const history = useHistory();
     const location = useLocation();
@@ -22,7 +21,7 @@ export const FeedOrder: FC<{ feedOrder: IFeedOrder }> = ({ feedOrder }) => {
             pathname: `${location.pathname}/${feedOrder.number}`,
             state: { background: location }
         });
-    }, [history])
+    }, [feedOrder.number, history, location])
     return (
         <div onClick={goToOrder} className={`
         p-5 m-1

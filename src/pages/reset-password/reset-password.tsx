@@ -2,10 +2,9 @@ import React, {FC, FormEvent, useCallback, useEffect, useState} from "react";
 import CommonStyles from "../../styles/common.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
-import {authUser, resetPassword} from "../../services/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
-import {AnyAction} from "redux";
-import {IAuth, IStore} from "../../services/store";
+import {useDispatch, useSelector} from "../../redux/hooks";
+import {TResetPasswordRequest} from "../../redux/types/user";
+import {userAuthThunk, userResetPasswordThunk} from "../../redux/actions/user";
 
 export interface IResetPasswordPayload {
     token: string
@@ -24,26 +23,31 @@ export const ResetPasswordPage: FC = () => {
     }
 
     useEffect(() => {
-        dispatch(authUser() as AnyAction);
-    }, []);
+        dispatch(userAuthThunk());
+    }, [dispatch]);
 
-    const authState = useSelector<IStore>(store => store.auth) as IAuth;
+    const {
+        user,
+        userResetPasswordRequest,
+        userResetPasswordFailure,
+        userResetPasswordSuccess
+    } = useSelector(store => store.user);
 
     const resetPasswordCallback = useCallback((e: FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        const payload: IResetPasswordPayload = {
+        const payload: TResetPasswordRequest = {
             password: newPwd,
             token: emailCode
         }
-        dispatch(resetPassword(payload) as AnyAction);
-    }, [emailCode, newPwd]);
+        dispatch(userResetPasswordThunk(payload));
+    }, [dispatch, emailCode, newPwd]);
 
-    if (authState.user) {
+    if (user) {
         return <Redirect to="/" />;
     }
 
-    if (authState.resetPassword.success && authState.resetPassword.error === null) {
+    if (userResetPasswordSuccess) {
         return <Redirect to="/login" />;
     }
 
@@ -57,7 +61,7 @@ export const ResetPasswordPage: FC = () => {
             <span className={`text_type_main-default text_color_primary`}>Восстановление пароля</span>
             <div className={`mt-6`}>
                 <Input
-                    disabled={authState.resetPassword.request}
+                    disabled={userResetPasswordRequest}
                     value={newPwd}
                     type={pwdType}
                     placeholder={'Введите новый пароль'}
@@ -68,16 +72,16 @@ export const ResetPasswordPage: FC = () => {
             </div>
             <div className={`mt-6`}>
                 <Input
-                    disabled={authState.resetPassword.request}
+                    disabled={userResetPasswordRequest}
                     value={emailCode}
                     type={'text'}
                     placeholder={'Введите код из письма'}
                     onChange={e => setEmailCode(e.target.value)}
                 />
             </div>
-            {authState.resetPassword.error && <span className='text_type_main-small text_color_error mt-6'>{authState.resetPassword.error}</span>}
+            {userResetPasswordFailure && <span className='text_type_main-small text_color_error mt-6'>Ошибка смены пароля</span>}
             <div className={`mt-6`}>
-                <Button htmlType="submit" disabled={authState.resetPassword.request}>Восстановить</Button>
+                <Button htmlType="submit" disabled={userResetPasswordRequest}>Восстановить</Button>
             </div>
             <div className={`mt-20`}>
                 <span className={`text_type_main-default text_color_inactive`}>Вспомнили пароль? </span>

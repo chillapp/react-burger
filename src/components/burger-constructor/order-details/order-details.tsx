@@ -2,36 +2,36 @@ import CommonStyles from '../../../styles/common.module.css'
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {FC} from "react";
 import {Spinner} from "../../spinner/spinner";
-import {useDispatch, useSelector} from "react-redux";
-import {createOrder} from "../../../services/actions/orders";
-import {constructorReset} from "../../../services/actions/constructor";
 import {Redirect, useLocation} from "react-router-dom";
-import {IAuth, IConstructor, IOrders, IStore} from "../../../services/store";
-import {AnyAction} from "redux";
+import {useDispatch, useSelector} from "../../../redux/hooks";
+import {constructorReset} from "../../../redux/actions/constructor";
+import {userCreateOrderThunk} from "../../../redux/actions/user";
 
 export const OrderDetails: FC = () => {
     const dispatch = useDispatch();
 
     const location = useLocation();
 
-    const { user } = useSelector<IStore>(store => store.auth) as IAuth;
+    const {
+        user,
+        order,
+        userCreateOrderRequest,
+        userCreateOrderFailure
+    } = useSelector(store => store.user);
 
-    const { items: cart } = useSelector<IStore>(store => store.constructor) as IConstructor;
-
-    const { order, loading, success } = useSelector<IStore>(store => store.orders) as IOrders;
-
-    const newOrder = (ids: Array<string>) => {
-        dispatch(createOrder(ids) as AnyAction);
-    }
+    const { cart } = useSelector(store => store.burgerConstructor);
 
     React.useEffect(() => {
-        if (success) dispatch(constructorReset());
-    }, [dispatch, success])
+        if (order) dispatch(constructorReset());
+    }, [dispatch, order])
 
-    // eslint-disable-next-line
+
     React.useEffect(() => {
-        if (user) newOrder(cart.map(item => item._id))
-    }, []);
+        if (user) {
+            const ingredients = cart.map(item => item._id);
+            dispatch(userCreateOrderThunk(ingredients))
+        }
+    }, [user, dispatch]);
 
     if (!user) {
         return <Redirect to={{
@@ -54,9 +54,9 @@ export const OrderDetails: FC = () => {
         </div>
     );
 
-    return loading
+    return userCreateOrderRequest
         ? (<div className={`${CommonStyles.flexColumn} ${CommonStyles.flexAICenter}`}><Spinner/></div>)
-        : !success
+        : userCreateOrderFailure
             ? <span>Ошибка создания заказа</span>
             : orderDetails;
 }

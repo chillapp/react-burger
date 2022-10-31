@@ -2,10 +2,9 @@ import React, {FC, FormEvent, useCallback, useEffect, useState} from "react";
 import CommonStyles from "../../styles/common.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {authUser, registerUser} from "../../services/actions/auth";
-import {IAuth, IStore, IUser} from "../../services/store";
-import {AnyAction} from "redux";
+import {useDispatch, useSelector} from "../../redux/hooks";
+import {userAuthThunk, userRegisterThunk} from "../../redux/actions/user";
+import {TUser} from "../../redux/types/user";
 
 export const RegisterPage: FC = () => {
     const dispatch = useDispatch();
@@ -16,8 +15,8 @@ export const RegisterPage: FC = () => {
     const [pwdType, setPwdType] = useState<"password" | "text">('password');
 
     useEffect(() => {
-        dispatch(authUser() as AnyAction);
-    }, []);
+        dispatch(userAuthThunk());
+    }, [dispatch]);
 
     const showPassword = () => {
         setPwdType(pwdType === 'password' ? 'text' : 'password')
@@ -26,17 +25,21 @@ export const RegisterPage: FC = () => {
     const registerUserCallback = useCallback((e: FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        const payload: IUser = {
+        const payload: TUser = {
             email: email,
             password: password,
             name: name
         }
-        dispatch(registerUser(payload) as AnyAction);
-    }, [name, email, password])
+        dispatch(userRegisterThunk(payload));
+    }, [email, password, name, dispatch])
 
-    const authState = useSelector<IStore>(store => store.auth) as IAuth;
+    const {
+        user,
+        userRegisterRequest,
+        userRegisterFailure
+    } = useSelector(store => store.user);
 
-    if (authState.user) {
+    if (user) {
         return <Redirect to="/" />;
     }
 
@@ -50,7 +53,7 @@ export const RegisterPage: FC = () => {
             <span className={`text_type_main-default text_color_primary`}>Регистрация</span>
             <div className={`mt-6`}>
                 <Input
-                    disabled={authState.registerUser.request}
+                    disabled={userRegisterRequest}
                     value={name}
                     type={'text'}
                     placeholder={'Имя'}
@@ -59,7 +62,7 @@ export const RegisterPage: FC = () => {
             </div>
             <div className={`mt-6`}>
                 <Input
-                    disabled={authState.registerUser.request}
+                    disabled={userRegisterRequest}
                     value={email}
                     type={'email'}
                     placeholder={'E-mail'}
@@ -68,7 +71,7 @@ export const RegisterPage: FC = () => {
             </div>
             <div className={`mt-6`}>
                 <Input
-                    disabled={authState.registerUser.request}
+                    disabled={userRegisterRequest}
                     value={password}
                     type={pwdType}
                     placeholder={'Пароль'}
@@ -77,12 +80,12 @@ export const RegisterPage: FC = () => {
                     onChange={e => setPassword(e.target.value)}
                 />
             </div>
-            {authState.registerUser.error && <span className='text_type_main-small text_color_error mt-6'>{authState.registerUser.error}</span>}
+            {userRegisterFailure && <span className='text_type_main-small text_color_error mt-6'>Ошибка регистрации</span>}
             <div className={`mt-6`}>
-                <Button htmlType="submit" disabled={authState.registerUser.request}>Зарегистрироваться</Button>
+                <Button htmlType="submit" disabled={userRegisterRequest}>Зарегистрироваться</Button>
             </div>
             <div className={`mt-20`}>
-                <span className={`text_type_main-default text_color_inactive`}>Уже зарегистрированы? </span>
+                <span className={`text_type_main-default text_color_inactive`}>Уже зарегистрированы?</span>
                 <Link to={'/login'} className={`text_type_main-default text_color_accent ${CommonStyles.textDecorationNone}`}>Войти</Link>
             </div>
         </form>

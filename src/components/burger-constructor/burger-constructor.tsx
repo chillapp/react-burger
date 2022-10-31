@@ -7,25 +7,23 @@ import styles from './burger-construtor.module.css';
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Modal} from "../modal/modal";
 import {OrderDetails} from "./order-details/order-details";
-import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
-import {constructorAdd} from "../../services/actions/constructor";
-import {IIngredient} from "../../services/actions/ingredients";
-import {IConstructor, IStore} from "../../services/store";
+import {useDispatch, useSelector} from "../../redux/hooks";
+import {constructorAdd} from "../../redux/actions/constructor";
+import {TIngredient} from "../../redux/types/ingredients";
 
 export const BurgerConstructor: FC = () => {
-    const dispatch = useDispatch();
-
-    const [, dropTarget] = useDrop<IIngredient>({
+    const dispatch = useDispatch()
+    const [, dropTarget] = useDrop<TIngredient>({
         accept: "ingredient",
-        drop(item) {
-            dispatch(constructorAdd(item))
+        drop(ingredient) {
+            dispatch(constructorAdd(ingredient))
         },
     });
 
     const [createOrder, setCreateOrder] = React.useState(false);
 
-    const { items: cart, totalPrice } = useSelector<IStore>(store => store.constructor) as IConstructor;
+    const { cart, totalPrice } = useSelector(store => store.burgerConstructor);
 
     const showCreateOrderModal = () => setCreateOrder(true);
     const closeCreateOrderModal = () => setCreateOrder(false);
@@ -35,7 +33,7 @@ export const BurgerConstructor: FC = () => {
         return cart.filter(x => x.type !== 'bun').map((cartItem) =>
             <BurgerConstructorItem
                 key={cartItem.uuid}
-                cartItem={cartItem}
+                ingredient={cartItem}
             />
         )
     }, [cart]);
