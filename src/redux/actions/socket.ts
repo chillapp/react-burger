@@ -1,6 +1,7 @@
 import {
+    WS_CONNECTION_CLOSE,
     WS_CONNECTION_CLOSED,
-    WS_CONNECTION_ERROR,
+    WS_CONNECTION_ERROR, WS_CONNECTION_RECONNECT,
     WS_CONNECTION_START,
     WS_CONNECTION_SUCCESS,
 } from "../consts/socket";
@@ -15,7 +16,25 @@ export const wsConnectionStart = (payload: TWSConnect): IWSConnectionStartAction
     payload: payload
 });
 
-interface IWSConnectionSuccessAction {
+interface IWSConnectionCloseAction {
+    readonly type: typeof WS_CONNECTION_CLOSE;
+    readonly payload: { url: string }
+}
+export const wsConnectionClose = (payload: { url: string }): IWSConnectionCloseAction => ({
+    type: WS_CONNECTION_CLOSE,
+    payload: payload
+});
+
+interface IWSConnectionReconnectAction {
+    readonly type: typeof WS_CONNECTION_RECONNECT;
+    readonly payload: TWSConnect
+}
+export const wsConnectionReconnect = (payload: TWSConnect): IWSConnectionReconnectAction => ({
+    type: WS_CONNECTION_RECONNECT,
+    payload: payload
+});
+
+export interface IWSConnectionSuccessAction {
     readonly type: typeof WS_CONNECTION_SUCCESS;
     readonly payload: TWSEventsPayload
 }
@@ -24,7 +43,7 @@ export const wsConnectionSuccess = (payload: TWSEventsPayload): IWSConnectionSuc
     payload: payload
 });
 
-interface IWSConnectionErrorAction {
+export interface IWSConnectionErrorAction {
     readonly type: typeof WS_CONNECTION_ERROR;
     readonly payload: TWSEventsPayload
 }
@@ -33,7 +52,7 @@ export const wsConnectionError = (payload: TWSEventsPayload): IWSConnectionError
     payload: payload
 });
 
-interface IWSConnectionClosedAction {
+export interface IWSConnectionClosedAction {
     readonly type: typeof WS_CONNECTION_CLOSED;
     readonly payload: TWSEventsPayload
 }
@@ -46,4 +65,6 @@ export type TWSSocketActions =
     IWSConnectionStartAction |
     IWSConnectionSuccessAction |
     IWSConnectionErrorAction |
-    IWSConnectionClosedAction
+    IWSConnectionClosedAction |
+    IWSConnectionCloseAction |
+    IWSConnectionReconnectAction

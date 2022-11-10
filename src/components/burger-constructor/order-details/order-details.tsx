@@ -31,7 +31,7 @@ export const OrderDetails: FC = () => {
             const ingredients = cart.map(item => item._id);
             dispatch(userCreateOrderThunk(ingredients))
         }
-    }, [user, dispatch]);
+    }, [user, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!user) {
         return <Redirect to={{

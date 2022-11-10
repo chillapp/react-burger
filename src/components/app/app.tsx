@@ -14,18 +14,8 @@ import {Modal} from "../modal/modal";
 import * as H from 'history';
 import {FeedPage} from "../../pages/feed/feed";
 import {FeedOrderDetails} from "../feed-order-details/feed-order-details";
-import {useDispatch, useSelector} from "../../redux/hooks";
+import {useDispatch} from "../../redux/hooks";
 import {getIngredientsThunk} from "../../redux/actions/ingredients";
-import {
-    wsConnectionClosed,
-    wsConnectionError,
-    wsConnectionStart,
-    wsConnectionSuccess
-} from "../../redux/actions/socket";
-import {getWsApiUrl} from "../../services/http";
-import {commonFeedUpdate, profileFeedUpdate} from "../../redux/actions/feed";
-import {TWSConnect} from "../../redux/types/socket";
-import {getCookie} from "../../utils/common";
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -52,37 +42,7 @@ export default function App() {
 
         React.useEffect(() => {
             dispatch(getIngredientsThunk());
-            const payload: TWSConnect = {
-                url: getWsApiUrl("orders/all"),
-                actions: {
-                    wsGetMessage: commonFeedUpdate,
-                    wsConnectionError: wsConnectionError,
-                    wsConnectionClosed: wsConnectionClosed,
-                    wsConnectionSuccess: wsConnectionSuccess
-                }
-            }
-            dispatch(wsConnectionStart(payload));
         },[dispatch]);
-
-        const profileSocketURL = getWsApiUrl("orders");
-        const profileSocket = useSelector(store => store.socket[profileSocketURL]);
-        const { user } = useSelector(store => store.user);
-        React.useEffect(() => {
-            if (user && (!profileSocket || !profileSocket.wsConnected)) {
-                const token = getCookie("accessToken").replace("Bearer ", "");
-                const payload: TWSConnect = {
-                    url: profileSocketURL,
-                    token: token,
-                    actions: {
-                        wsGetMessage: profileFeedUpdate,
-                        wsConnectionError: wsConnectionError,
-                        wsConnectionClosed: wsConnectionClosed,
-                        wsConnectionSuccess: wsConnectionSuccess
-                    }
-                }
-                dispatch(wsConnectionStart(payload));
-            }
-        }, [user, profileSocket, profileSocketURL, dispatch])
 
         return (
             <>

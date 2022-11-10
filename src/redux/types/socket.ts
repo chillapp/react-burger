@@ -1,3 +1,5 @@
+import {ICommonFeedUpdateAction, IProfileFeedUpdateAction} from "../actions/feed";
+import {IWSConnectionClosedAction, IWSConnectionErrorAction, IWSConnectionSuccessAction} from "../actions/socket";
 
 export type TWSEventsPayload = {
     url: string
@@ -5,10 +7,10 @@ export type TWSEventsPayload = {
 }
 
 export type TWSActions = {
-    wsGetMessage: (payload: string) => any
-    wsConnectionError: (payload: TWSEventsPayload) => any
-    wsConnectionClosed: (payload: TWSEventsPayload) => any
-    wsConnectionSuccess: (payload: TWSEventsPayload) => any
+    wsGetMessage: (payload: string) => ICommonFeedUpdateAction | IProfileFeedUpdateAction
+    wsConnectionError: (payload: TWSEventsPayload) => IWSConnectionErrorAction
+    wsConnectionClosed: (payload: TWSEventsPayload) => IWSConnectionClosedAction
+    wsConnectionSuccess: (payload: TWSEventsPayload) => IWSConnectionSuccessAction
 }
 
 export type TWSConnect = {

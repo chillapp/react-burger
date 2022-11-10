@@ -1,6 +1,6 @@
 import {COMMON_FEED_UPDATE, PROFILE_FEED_UPDATE} from "../consts/feed";
 
-interface ICommonFeedUpdateAction {
+export interface ICommonFeedUpdateAction {
     readonly type: typeof COMMON_FEED_UPDATE;
     readonly feed: string
 }
@@ -9,7 +9,7 @@ export const commonFeedUpdate = (feed: string): ICommonFeedUpdateAction => ({
     feed: feed
 });
 
-interface IProfileFeedUpdateAction {
+export interface IProfileFeedUpdateAction {
     readonly type: typeof PROFILE_FEED_UPDATE;
     readonly feed: string
 }
