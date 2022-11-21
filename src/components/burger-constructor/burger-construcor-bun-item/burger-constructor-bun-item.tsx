@@ -2,9 +2,9 @@ import React, {FC} from "react";
 import styles from './burger-constructor-bun-item.module.css';
 import commonStyles from '../../../styles/common.module.css';
 import {CurrencyIcon, LockIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IIngredient} from "../../../services/actions/ingredients";
+import {TIngredient} from "../../../redux/types/ingredients";
 
-export const BurgerConstructorBunItem: FC<{ role: "top" | "bottom", bun?: IIngredient }> = ({ role, bun }) => {
+export const BurgerConstructorBunItem: FC<{ role: "top" | "bottom", bun?: TIngredient }> = ({ role, bun }) => {
     return (
         <div className={`${commonStyles.flexRow} ${commonStyles.flexAICenter} pl-8`}>
             <div className={

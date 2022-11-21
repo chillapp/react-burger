@@ -1,20 +1,19 @@
 import CommonStyles from '../../../styles/common.module.css'
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {Spinner} from "../../spinner/spinner";
 import commonStyles from "../../../styles/common.module.css";
 import React, {FC} from "react";
-import {IIngredient} from "../../../services/actions/ingredients";
-import {IIngredients, IStore} from "../../../services/store";
+import {useSelector} from "../../../redux/hooks";
+import {TIngredient} from "../../../redux/types/ingredients";
 
 export const IngredientDetails: FC = () => {
-    let ingredient: IIngredient | null = null;
+    let ingredient: TIngredient | null = null;
     const { id: ingredientId } = useParams<{ id: string }>();
-    const { items } = useSelector<IStore>(store => store.ingredients) as IIngredients;
-    const ingredientIndex = items.findIndex(item => item._id === ingredientId);
+    const { rows: ingredients } = useSelector(store => store.ingredients);
+    const ingredientIndex = ingredients.findIndex(item => item._id === ingredientId);
 
     if (ingredientIndex >= 0) {
-        ingredient = items[ingredientIndex];
+        ingredient = ingredients[ingredientIndex];
     }
 
     let content = <Spinner />;

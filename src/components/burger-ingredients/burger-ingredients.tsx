@@ -3,16 +3,14 @@ import commonStyles from '../../styles/common.module.css';
 import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {BurgerIngredientsItem} from "./burger-ingredients-item/burger-ingredients-item";
-import {useDispatch, useSelector} from "react-redux";
-import {ingredientsSetTab} from "../../services/actions/ingredients";
-import {IConstructor, IIngredients, IStore} from "../../services/store";
+import {useDispatch, useSelector} from "../../redux/hooks";
+import {ingredientsSetTab} from "../../redux/actions/ingredients";
 
 export const BurgerIngredients: FC = () => {
     const dispatch = useDispatch();
 
-    const { items: data, currentTab } = useSelector<IStore>(store => store.ingredients) as IIngredients;
-
-    const { items: cart } = useSelector<IStore>(store => store.constructor) as IConstructor;
+    const { rows: data, ingredientsTab } = useSelector(store => store.ingredients)
+    const { cart } = useSelector(store => store.burgerConstructor);
 
     const tabClick = (tab: string, elRef: React.RefObject<HTMLDivElement>) => {
         dispatch(ingredientsSetTab(tab));
@@ -38,7 +36,7 @@ export const BurgerIngredients: FC = () => {
                 </div>
             </>
         )
-    }, [data, cart]);
+    }, [cart, data]);
 
     const saucesRef = React.useRef<HTMLDivElement>(null);
     const sauceItems = React.useMemo(() => {
@@ -59,7 +57,7 @@ export const BurgerIngredients: FC = () => {
                 </div>
             </>
         )
-    }, [data, cart]);
+    }, [cart, data]);
 
     const mainsRef = React.useRef<HTMLDivElement>(null);
     const mainItems = React.useMemo(() => {
@@ -80,7 +78,7 @@ export const BurgerIngredients: FC = () => {
                 </div>
             </>
         )
-    }, [data, cart]);
+    }, [cart, data]);
 
 
     let scrollEndTimeOut: NodeJS.Timeout | null = null;
@@ -90,7 +88,7 @@ export const BurgerIngredients: FC = () => {
     }
 
     const scrollEndHandler = (e: React.UIEvent<HTMLDivElement>) => {
-        const tabs = ['one', 'two', 'three'];
+        const tabs = ['bun', 'sauce', 'main'];
 
         const scrollContainer = e.target as HTMLDivElement;
         const containerRect = scrollContainer.getBoundingClientRect();
@@ -115,8 +113,7 @@ export const BurgerIngredients: FC = () => {
         const minValue = Math.min(...values);
         const minIndex = values.indexOf(minValue);
 
-        if (currentTab !== tabs[minIndex]) {
-            dispatch(ingredientsSetTab(tabs[minIndex]));
+        if (ingredientsTab !== tabs[minIndex]) {
         }
     }
 
@@ -126,22 +123,22 @@ export const BurgerIngredients: FC = () => {
             <span className='text text_type_main-large'>Соберите бургер</span>
             <div className={`pt-5 ${commonStyles.flexRow} ${commonStyles.flexFill}`}>
                 <Tab
-                    value="one"
-                    active={currentTab === 'one'}
+                    value="bun"
+                    active={ingredientsTab === 'bun'}
                     onClick={(tab) => tabClick(tab, bunsRef)}
                 >
                     Булки
                 </Tab>
                 <Tab
-                    value="two"
-                    active={currentTab === 'two'}
+                    value="sauce"
+                    active={ingredientsTab === 'sauce'}
                     onClick={(tab) => tabClick(tab, saucesRef)}
                 >
                     Соусы
                 </Tab>
                 <Tab
-                    value="three"
-                    active={currentTab === 'three'}
+                    value="main"
+                    active={ingredientsTab === 'main'}
                     onClick={(tab) => tabClick(tab, mainsRef)}
                 >
                     Начинки

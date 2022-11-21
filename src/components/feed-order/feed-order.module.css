@@ -1,0 +1,23 @@
+.contentContainer {
+    width: 400px;
+}
+
+.ingredientLogo {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid blueviolet;
+    background: #1C1C21;
+}
+
+.ingredientLogo:not(:last-child) {
+    margin-left: -16px;
+}
+
+.list {
+    list-style-type: none;
+    margin: 16px 0;
+    padding: 0;
+}
+

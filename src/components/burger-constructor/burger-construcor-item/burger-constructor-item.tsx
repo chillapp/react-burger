@@ -3,22 +3,22 @@ import {IconButton} from "../../icon-button/icon-button";
 import styles from './burger-constructor-item.module.css';
 import commonStyles from '../../../styles/common.module.css';
 import {CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
-import {constructorDel, constructorReplace} from "../../../services/actions/constructor";
 import {useDrag, useDrop} from "react-dnd";
-import {IIngredient} from "../../../services/actions/ingredients";
-import {IConstructor, IStore} from "../../../services/store";
+import {useDispatch, useSelector} from "../../../redux/hooks";
+import {constructorDel, constructorReplace} from "../../../redux/actions/constructor";
+import {TConstructorDND} from "../../../redux/types/constructor";
+import {TIngredient} from "../../../redux/types/ingredients";
 
-export const BurgerConstructorItem: FC<{ cartItem: IIngredient }> = ({ cartItem }) => {
+export const BurgerConstructorItem: FC<{ ingredient: TIngredient }> = ({ ingredient }) => {
     const dispatch = useDispatch();
 
-    const { items: cart } = useSelector<IStore>(store => store.constructor) as IConstructor;
+    const { cart } = useSelector(store => store.burgerConstructor);
 
-    const removeFromCart = () => dispatch(constructorDel(cartItem));
+    const removeFromCart = () => dispatch(constructorDel(ingredient));
 
     const [{ opacity }, dragRef] = useDrag({
         type: 'ingredient_move',
-        item: { ...cartItem },
+        item: { ...ingredient },
         collect: monitor => ({
             opacity: monitor.isDragging() ? .5 : 1
         })
@@ -26,9 +26,12 @@ export const BurgerConstructorItem: FC<{ cartItem: IIngredient }> = ({ cartItem 
 
     const [{ isHover, dropItem }, dropRef] = useDrop({
         accept: 'ingredient_move',
-        drop(item: IIngredient) {
-            const payload: { dragItem: IIngredient, dropItem: IIngredient } = { dragItem: item, dropItem: cartItem };
-            dispatch(constructorReplace(payload))
+        drop(item: TIngredient) {
+            const data: TConstructorDND = {
+                dragIngredient: item,
+                dropIngredient: ingredient
+            };
+            dispatch(constructorReplace(data))
         },
         collect: monitor => ({
             isHover: monitor.isOver(),
@@ -37,9 +40,9 @@ export const BurgerConstructorItem: FC<{ cartItem: IIngredient }> = ({ cartItem 
     });
 
     let dropToTop = 'none', dropToBottom = 'none';
-    if (isHover && dropItem.uuid !== cartItem.uuid) {
+    if (isHover && dropItem.uuid !== ingredient.uuid) {
         const dropIndex = cart.findIndex(item => item.uuid === dropItem.uuid);
-        const dragIndex = cart.findIndex(item => item.uuid === cartItem.uuid);
+        const dragIndex = cart.findIndex(item => item.uuid === ingredient.uuid);
         if (dropIndex >= dragIndex) {
             dropToTop = 'block';
         } else {
@@ -55,12 +58,12 @@ export const BurgerConstructorItem: FC<{ cartItem: IIngredient }> = ({ cartItem 
                     <DragIcon type='primary'/>
                 </div>
                 <div className={`pt-4 pb-4 pr-8 pl-6 mr-2 ml-2 ${styles.item} ${commonStyles.flexFill}`}>
-                    <img alt='' className={styles.smallImage} src={cartItem.image}/>
-                    <span className={`text text_type_main-default ml-5 ${commonStyles.flexFill}`}>{cartItem.name}</span>
-                    <span className='ml-5 mr-1 text text_type_digits-default'>{cartItem.price}</span>
+                    <img alt='' className={styles.smallImage} src={ingredient.image}/>
+                    <span className={`text text_type_main-default ml-5 ${commonStyles.flexFill}`}>{ingredient.name}</span>
+                    <span className='ml-5 mr-1 text text_type_digits-default'>{ingredient.price}</span>
                     <CurrencyIcon type='primary'/>
                     <div className='pl-5'>
-                        <IconButton icon='delete' click={removeFromCart}/>
+                       <IconButton icon='delete' click={removeFromCart}/>
                     </div>
                 </div>
             </div>

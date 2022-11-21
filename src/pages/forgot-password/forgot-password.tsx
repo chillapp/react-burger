@@ -1,33 +1,35 @@
 import CommonStyles from "../../styles/common.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {FC, FormEvent, useCallback, useEffect, useState} from "react";
-import {authUser, forgotPassword} from "../../services/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
 import {Link, Redirect} from "react-router-dom";
-import {AnyAction} from "redux";
-import {IAuth, IStore} from "../../services/store";
+import {useDispatch, useSelector} from "../../redux/hooks";
+import {userForgotPasswordThunk} from "../../redux/actions/user";
 
 export const ForgotPasswordPage: FC = () => {
     const [email, setEmail] = useState('');
 
     const dispatch = useDispatch();
-    const authState = useSelector<IStore>(store => store.auth) as IAuth;
+    const {
+        user,
+        userForgotPasswordRequest,
+        userForgotPasswordSuccess
+    } = useSelector(store => store.user);
 
     useEffect(() => {
-        dispatch(authUser() as AnyAction);
+        //dispatch(authUser() as AnyAction);
     }, []);
 
     const reqForgotPassword = useCallback((e: FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        dispatch(forgotPassword(email) as AnyAction);
+        dispatch(userForgotPasswordThunk(email));
     }, [dispatch, email]);
 
-    if (authState.user) {
+    if (user) {
         return <Redirect to="/" />;
     }
 
-    if (authState.forgotPassword.success && !authState.forgotPassword.error) {
+    if (userForgotPasswordSuccess) {
         return <Redirect push to="/reset-password" />;
     }
 
@@ -41,7 +43,7 @@ export const ForgotPasswordPage: FC = () => {
             <span className={`text_type_main-default text_color_primary`}>Восстановление пароля</span>
             <div className={`mt-6`}>
                 <Input
-                    disabled={authState.forgotPassword.request}
+                    disabled={userForgotPasswordRequest}
                     value={email}
                     type={'email'}
                     placeholder={'E-mail'}
@@ -49,7 +51,7 @@ export const ForgotPasswordPage: FC = () => {
                 />
             </div>
             <div className={`mt-6`}>
-                <Button htmlType="submit" disabled={authState.forgotPassword.request}>Восстановить</Button>
+                <Button htmlType="submit" disabled={userForgotPasswordRequest}>Восстановить</Button>
             </div>
             <div className={`mt-20`}>
                 <span className={`text_type_main-default text_color_inactive`}>Вспомнили пароль?</span>

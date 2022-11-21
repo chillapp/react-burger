@@ -1,0 +1,28 @@
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ordersDetailsContent {
+    width: 800px;
+}
+
+.ordersDetailsQueue {
+    height: 300px;
+}
+
+.ordersDetailsItem {
+    width: 600px;
+}
+
+.fontSmaller {
+    font-size: smaller;
+}
+
+.textShadow {
+    text-shadow: 0 0 24px rgba(0,0,255, .3);
+}
+
+.rowHeight {
+    height:10%
+}

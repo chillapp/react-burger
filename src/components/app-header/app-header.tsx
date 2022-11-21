@@ -14,7 +14,7 @@ export default function AppHeader() {
             </div>
             <section className={commonStyles.flexRow}>
                 <IconButton navLink='/' icon='burger'>Конструктор</IconButton>
-                <IconButton icon='list'>Лента заказов</IconButton>
+                <IconButton navLink='/feed' icon='list'>Лента заказов</IconButton>
             </section>
             <IconButton navLink='/profile' icon='profile'>Личный кабинет</IconButton>
         </header>
