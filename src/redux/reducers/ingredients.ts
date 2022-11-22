@@ -13,7 +13,6 @@ export type TIngredientsState = {
 const ingredientsInitialState: TIngredientsState = {
     ingredientsTab: "bun",
     ingredientsShowDetails: false,
-
     rows: [],
     ingredientsRequest: false,
     ingredientsFailure: false,
