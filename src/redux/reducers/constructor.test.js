@@ -1,4 +1,4 @@
-import {constructorReducer} from "./constructor";
+import {constructorInitialState, constructorReducer} from "./constructor";
 import * as actions from "../consts/constructor";
 
 
@@ -21,11 +21,6 @@ jest.mock( 'uuid', () => {
       v4: () => uuids[ingredientIndex++]
     }
 });
-
-const initialState = {
-    cart: [],
-    totalPrice: 0
-}
 
 const ingredient = {
     _id: "uuid_str",
@@ -89,7 +84,7 @@ const ingredient4 = {
 
 describe('редуктор конструктора', () => {
     it('должен вернуть исходное состояние', () => {
-        expect(constructorReducer(undefined, {})).toEqual(initialState)
+        expect(constructorReducer(undefined, {})).toEqual(constructorInitialState)
     });
     it('должен обработать CONSTRUCTOR_ADD', () => {
         expect(
@@ -98,7 +93,7 @@ describe('редуктор конструктора', () => {
                 ingredient: ingredient
             })
         ).toEqual({
-            ...initialState,
+            ...constructorInitialState,
             cart: [
                 { ...ingredient, uuid: uuidArr[0] }
             ],
@@ -106,7 +101,7 @@ describe('редуктор конструктора', () => {
         })
        expect(
             constructorReducer({
-                ...initialState,
+                ...constructorInitialState,
                 cart: [ingredient],
                 totalPrice: 10.52
             }, {
@@ -114,7 +109,7 @@ describe('редуктор конструктора', () => {
                 ingredient: ingredient2
             })
             ).toEqual({
-                ...initialState,
+                ...constructorInitialState,
                 cart: [
                     { ...ingredient, uuid: uuidArr[1] },
                     { ...ingredient2, uuid: uuidArr[2] },
@@ -123,7 +118,7 @@ describe('редуктор конструктора', () => {
             })
             expect(
                 constructorReducer({
-                    ...initialState,
+                    ...constructorInitialState,
                     cart: [ingredient, ingredient2],
                     totalPrice: 766.91
                 }, {
@@ -131,7 +126,7 @@ describe('редуктор конструктора', () => {
                     ingredient: ingredient3
                 })
             ).toEqual({
-                ...initialState,
+                ...constructorInitialState,
                 cart: [
                     { ...ingredient, uuid: uuidArr[3] },
                     { ...ingredient2, uuid: uuidArr[4] },
@@ -141,7 +136,7 @@ describe('редуктор конструктора', () => {
             })
             expect(
                 constructorReducer({
-                    ...initialState,
+                    ...constructorInitialState,
                     cart: [ingredient, ingredient2, ingredient3],
                     totalPrice: 766.91 + 50.23
                 }, {
@@ -149,7 +144,7 @@ describe('редуктор конструктора', () => {
                     ingredient: ingredient4
                 })
             ).toEqual({
-                ...initialState,
+                ...constructorInitialState,
                 cart: [
                     { ...ingredient, uuid: uuidArr[6] },
                     { ...ingredient2, uuid: uuidArr[7] },
@@ -161,7 +156,7 @@ describe('редуктор конструктора', () => {
     it('должен обработать CONSTRUCTOR_DEL', () => {
         expect(
             constructorReducer({
-                ...initialState,
+                ...constructorInitialState,
                 cart: [
                     { ...ingredient, uuid: uuidArr[0] },
                     { ...ingredient2, uuid: uuidArr[1] },
@@ -173,7 +168,7 @@ describe('редуктор конструктора', () => {
                 ingredient: { ...ingredient2, uuid: uuidArr[1] },
             })
         ).toEqual({
-            ...initialState,
+            ...constructorInitialState,
             cart: [
                 { ...ingredient, uuid: uuidArr[0] },
                 { ...ingredient4, uuid: uuidArr[2] },
@@ -183,7 +178,7 @@ describe('редуктор конструктора', () => {
 
         expect(
             constructorReducer({
-                ...initialState,
+                ...constructorInitialState,
                 cart: [
                     { ...ingredient, uuid: uuidArr[0] },
                     { ...ingredient4, uuid: uuidArr[1] },
@@ -194,7 +189,7 @@ describe('редуктор конструктора', () => {
                 ingredient: { ...ingredient4, uuid: uuidArr[1] },
             })
         ).toEqual({
-            ...initialState,
+            ...constructorInitialState,
             cart: [
                 { ...ingredient, uuid: uuidArr[0] },
             ],
@@ -204,7 +199,7 @@ describe('редуктор конструктора', () => {
     it('должен обработать CONSTRUCTOR_REPLACE', () => {
         expect(
             constructorReducer({
-                ...initialState,
+                ...constructorInitialState,
                 cart: [
                     { ...ingredient, uuid: uuidArr[0] },
                     { ...ingredient2, uuid: uuidArr[1] },
@@ -219,7 +214,7 @@ describe('редуктор конструктора', () => {
                 },
             })
         ).toEqual({
-            ...initialState,
+            ...constructorInitialState,
             cart: [
                 { ...ingredient2, uuid: uuidArr[1] },
                 { ...ingredient, uuid: uuidArr[0] },

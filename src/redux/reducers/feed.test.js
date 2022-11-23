@@ -1,18 +1,5 @@
-import {feedReducer} from "./feed";
+import {feedInitialState, feedReducer} from "./feed";
 import * as actions from "../consts/feed";
-
-const initialState = {
-    commonFeed: {
-        orders: [],
-        total: 0,
-        totalToday: 0,
-    },
-    profileFeed: {
-        orders: [],
-        total: 0,
-        totalToday: 0,
-    }
-}
 
 describe('редуктор ленты заказов', () => {
     it('должен вернуть исходное состояние', () => {
@@ -36,7 +23,7 @@ describe('редуктор ленты заказов', () => {
                 feed: '{"orders":[{"order":1},{"order":2}],"total":1000,"totalToday":25}'
             })
         ).toEqual({
-            ...initialState,
+            ...feedInitialState,
             commonFeed: {
                 orders: [{
                     order: 1

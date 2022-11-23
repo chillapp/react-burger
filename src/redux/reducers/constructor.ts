@@ -7,7 +7,7 @@ export type TConstructorState = {
     totalPrice: number
 }
 
-const constructorInitialState: TConstructorState = {
+export const constructorInitialState: TConstructorState = {
     cart: [],
     totalPrice: 0
 }

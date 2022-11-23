@@ -1,37 +1,5 @@
-import {userReducer} from "./user";
+import {userInitialState, userReducer} from "./user";
 import * as actions from "../consts/user";
-
-const initialState = {
-    user: null,
-
-    userAuthRequest: false,
-    userAuthFailure: false,
-
-    userLoginRequest: false,
-    userLoginFailure: false,
-
-    userForgotPasswordRequest: false,
-    userForgotPasswordSuccess: false,
-    userForgotPasswordFailure: false,
-
-    userResetPasswordRequest: false,
-    userResetPasswordSuccess: false,
-    userResetPasswordFailure: false,
-
-    userLogoutRequest: false,
-    userLogoutSuccess: false,
-    userLogoutFailure: false,
-
-    userUpdateRequest: false,
-    userUpdateFailure: false,
-
-    userRegisterRequest: false,
-    userRegisterFailure: false,
-
-    order: null,
-    userCreateOrderRequest: false,
-    userCreateOrderFailure: false,
-}
 
 const user = {
     name: 'user name',
@@ -40,7 +8,7 @@ const user = {
 
 describe('редуктор пользователя', () => {
     it('должен вернуть исходное состояние', () => {
-        expect(userReducer(undefined, {})).toEqual(initialState)
+        expect(userReducer(undefined, {})).toEqual(userInitialState)
     });
     it('должен обработать LOGIN_USER_REQUEST', () => {
         expect(
@@ -48,7 +16,7 @@ describe('редуктор пользователя', () => {
                 type: actions.LOGIN_USER_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             user: null,
             userLoginRequest: true,
             userLoginFailure: false,
@@ -60,7 +28,7 @@ describe('редуктор пользователя', () => {
                 user: user
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             user: user,
             userLoginRequest: false,
             userLoginFailure: false,
@@ -71,7 +39,7 @@ describe('редуктор пользователя', () => {
                 type: actions.LOGIN_USER_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             user: null,
             userLoginFailure: true,
             userLoginRequest: false,
@@ -83,7 +51,7 @@ describe('редуктор пользователя', () => {
                 type: actions.USER_CREATE_ORDER_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             order: null,
             userCreateOrderRequest: true,
             userCreateOrderFailure: false,
@@ -95,7 +63,7 @@ describe('редуктор пользователя', () => {
                 order: { order: 2 }
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             order: { order: 2 },
             userCreateOrderRequest: false,
             userCreateOrderFailure: false,
@@ -106,7 +74,7 @@ describe('редуктор пользователя', () => {
                 type: actions.USER_CREATE_ORDER_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             order: null,
             userCreateOrderFailure: true,
             userCreateOrderRequest: false,
@@ -118,7 +86,7 @@ describe('редуктор пользователя', () => {
                 type: actions.AUTH_USER_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userAuthRequest: true,
             userAuthFailure: false,
         })
@@ -129,7 +97,7 @@ describe('редуктор пользователя', () => {
                 user: { user: 2 }
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             user: { user: 2 },
             userAuthRequest: false,
         })
@@ -139,7 +107,7 @@ describe('редуктор пользователя', () => {
                 type: actions.AUTH_USER_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             user: null,
             userAuthFailure: true,
             userAuthRequest: false,
@@ -151,7 +119,7 @@ describe('редуктор пользователя', () => {
                 type: actions.FORGOT_PASSWORD_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userForgotPasswordRequest: true,
             userForgotPasswordSuccess: false,
             userForgotPasswordFailure: false,
@@ -162,7 +130,7 @@ describe('редуктор пользователя', () => {
                 type: actions.FORGOT_PASSWORD_SUCCESS,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userForgotPasswordSuccess: true,
             userForgotPasswordRequest: false,
         })
@@ -172,7 +140,7 @@ describe('редуктор пользователя', () => {
                 type: actions.FORGOT_PASSWORD_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userForgotPasswordFailure: true,
             userForgotPasswordRequest: false,
         })
@@ -183,7 +151,7 @@ describe('редуктор пользователя', () => {
                 type: actions.RESET_PASSWORD_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userResetPasswordRequest: true,
             userResetPasswordFailure: false,
             userResetPasswordSuccess: false,
@@ -194,7 +162,7 @@ describe('редуктор пользователя', () => {
                 type: actions.RESET_PASSWORD_SUCCESS,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userResetPasswordSuccess: true,
             userResetPasswordRequest: false
         })
@@ -204,7 +172,7 @@ describe('редуктор пользователя', () => {
                 type: actions.RESET_PASSWORD_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userResetPasswordFailure: true,
             userResetPasswordRequest: false,
         })
@@ -215,7 +183,7 @@ describe('редуктор пользователя', () => {
                 type: actions.LOGOUT_USER_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userLogoutRequest: true,
             userLogoutSuccess: false,
             userLogoutFailure: false,
@@ -226,7 +194,7 @@ describe('редуктор пользователя', () => {
                 type: actions.LOGOUT_USER_SUCCESS,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userLogoutSuccess: true,
             userLogoutRequest: false,
         })
@@ -236,7 +204,7 @@ describe('редуктор пользователя', () => {
                 type: actions.LOGOUT_USER_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userLogoutFailure: true,
             userLogoutRequest: false,
         })
@@ -247,7 +215,7 @@ describe('редуктор пользователя', () => {
                 type: actions.UPDATE_USER_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userUpdateRequest: true,
             userUpdateFailure: false,
         })
@@ -258,7 +226,7 @@ describe('редуктор пользователя', () => {
                 user: user
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             user: user,
             userUpdateRequest: false,
         })
@@ -268,7 +236,7 @@ describe('редуктор пользователя', () => {
                 type: actions.UPDATE_USER_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userUpdateFailure: true,
             userUpdateRequest: false,
         })
@@ -279,7 +247,7 @@ describe('редуктор пользователя', () => {
                 type: actions.REGISTER_USER_REQUEST,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userRegisterRequest: true,
             userRegisterFailure: false
         })
@@ -290,7 +258,7 @@ describe('редуктор пользователя', () => {
                 user: user
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             user: user,
             userRegisterRequest: false
         })
@@ -300,7 +268,7 @@ describe('редуктор пользователя', () => {
                 type: actions.REGISTER_USER_FAILURE,
             })
         ).toEqual({
-            ...initialState,
+            ...userInitialState,
             userRegisterFailure: true,
             userRegisterRequest: false
         })

@@ -10,7 +10,7 @@ export type TIngredientsState = {
     ingredientsFailure: boolean
 }
 
-const ingredientsInitialState: TIngredientsState = {
+export const ingredientsInitialState: TIngredientsState = {
     ingredientsTab: "bun",
     ingredientsShowDetails: false,
     rows: [],
