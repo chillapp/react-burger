@@ -1,7 +1,9 @@
+import {testURL} from "./sources";
+
 describe('тестиурем роуты приложения', function() {
 
-    before('приложение доступно по адресу localhost:3000', function() {
-        cy.visit('http://localhost:3000');
+    before(`приложение доступно по адресу ${testURL}`, function() {
+        cy.visit(testURL);
     });
 
     it('по умолчанию должна быть открыта страница конструктора бургеров', function() {

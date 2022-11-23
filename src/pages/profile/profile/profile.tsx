@@ -3,6 +3,7 @@ import React, {FC, FormEvent, useCallback, useEffect, useRef, useState} from "re
 import {useDispatch, useSelector} from "../../../redux/hooks";
 import {TUserUpdateRequest} from "../../../redux/types/user";
 import {userUpdateThunk} from "../../../redux/actions/user";
+import {useForm} from "../../../hooks/useForm";
 
 interface IExtRef extends React.RefObject<any>{
     originalValue: string
@@ -15,34 +16,33 @@ export const ProfileProfilePage: FC = () => {
     } = useSelector(store => store.user);
 
     const originalValues = {
-        name: user?.name || "",
-        email: user?.email || "",
-        pwd: "",
+        userName: user?.name || "",
+        userEmail: user?.email || "",
+        userPwd: "",
     }
 
+    const {values, handleChange, setValues} = useForm(originalValues);
+
     const userNameRef = useRef<HTMLInputElement>(null) as IExtRef;
-    const [userName, setUserName] = useState<string>(user?.name || "");
     const [userNameEdit, setUserNameEdit] = useState<boolean>(false);
 
     const userEmailRef = useRef<HTMLInputElement>(null) as IExtRef;
-    const [userEmail, setUserEmail] = useState<string>(user?.email || "");
     const [userEmailEdit, setUserEmailEdit] = useState<boolean>(false);
 
     const userPwdRef = useRef<HTMLInputElement>(null) as IExtRef;
-    const [userPwd, setUserPwd] = useState<string>('');
     const [userPwdEdit, setUserPwdEdit] = useState<boolean>(false);
 
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
 
     useEffect(() => {
         if (
-            userName !== originalValues.name ||
-            userEmail !== originalValues.email ||
-            userPwd !== originalValues.pwd
+            values.userName !== originalValues.userName ||
+            values.userEmail !== originalValues.userEmail ||
+            values.userPwd !== originalValues.userPwd
         ) {
             setCanUpdate(true);
         } else setCanUpdate(false);
-    }, [userName, userEmail, userPwd, originalValues.name, originalValues.email, originalValues.pwd])
+    }, [values, originalValues.userName, originalValues.userEmail, originalValues.userPwd])
 
     const toggleEditField = (originalValue: string, ref: IExtRef, value: boolean, setter: Function) => {
         setter(!value);
@@ -56,25 +56,25 @@ export const ProfileProfilePage: FC = () => {
         e.preventDefault();
         e.stopPropagation();
         const payload: TUserUpdateRequest = {};
-        if (userPwd) payload.password = userPwd;
-        if (userName !== user?.name) payload.name = userName;
-        if (userEmail !== user?.email) payload.email = userEmail;
+        if (values.userPwd) payload.password = values.userPwd;
+        if (values.userName !== user?.name) payload.name = values.userName;
+        if (values.userEmail !== user?.email) payload.email = values.userEmail;
         dispatch(userUpdateThunk(payload));
         setCanUpdate(false);
         setUserNameEdit(false);
         setUserEmailEdit(false);
         setUserPwdEdit(false);
-    }, [userPwd, userName, user?.name, user?.email, userEmail, dispatch])
+    }, [values, user?.name, user?.email, dispatch])
 
     const cancelSave = useCallback(() => {
-        setUserName(user?.name || "");
         setUserNameEdit(false);
+        setValues({...values, userName: user?.name || ""});
 
-        setUserEmail(user?.email || "");
         setUserEmailEdit(false);
+        setValues({...values, userEmail: user?.email || ""});
 
-        setUserPwd('');
         setUserPwdEdit(false);
+        setValues({...values, userPwd: ""});
 
         setCanUpdate(false);
     }, [user?.email, user?.name]);
@@ -83,44 +83,41 @@ export const ProfileProfilePage: FC = () => {
         <form onSubmit={saveUser}>
             <div>
                 <Input
-                    name="name"
-                    value={userName}
+                    name="userName"
+                    value={values.userName || ""}
                     placeholder="Имя"
                     ref={userNameRef}
                     disabled={!userNameEdit}
-                    onChange={e => setUserName(e.target.value)}
+                    onChange={handleChange}
                     icon={userNameEdit ? "CheckMarkIcon" : "EditIcon"}
-                    onIconClick={toggleEditField.bind(this, originalValues.name, userNameRef, userNameEdit, setUserNameEdit)}
+                    onIconClick={toggleEditField.bind(this, originalValues.userName, userNameRef, userNameEdit, setUserNameEdit)}
                 />
             </div>
             <div className={`pt-6`}>
                 <Input
-                    name="email"
-                    value={userEmail}
+                    name="userEmail"
+                    value={values.userEmail || ""}
                     placeholder="Логин"
                     ref={userEmailRef}
                     disabled={!userEmailEdit}
-                    onChange={e => setUserEmail(e.target.value)}
+                    onChange={handleChange}
                     icon={userEmailEdit ? "CheckMarkIcon" : "EditIcon"}
-                    onIconClick={toggleEditField.bind(this, originalValues.email, userEmailRef, userEmailEdit, setUserEmailEdit)}
+                    onIconClick={toggleEditField.bind(this, originalValues.userEmail, userEmailRef, userEmailEdit, setUserEmailEdit)}
                 />
             </div>
             <div className={`pt-6`}>
                 <Input
-                    name="password"
+                    name="userPwd"
                     type="password"
-                    value={userPwd}
+                    value={values.userPwd || ""}
                     placeholder="Пароль"
                     ref={userPwdRef}
                     disabled={!userPwdEdit}
-                    onChange={e => setUserPwd(e.target.value)}
+                    onChange={handleChange}
                     icon={userPwdEdit ? "CheckMarkIcon" : "EditIcon"}
-                    onIconClick={toggleEditField.bind(this, originalValues.pwd, userPwdRef, userPwdEdit, setUserPwdEdit)}
+                    onIconClick={toggleEditField.bind(this, originalValues.userPwd, userPwdRef, userPwdEdit, setUserPwdEdit)}
                 />
             </div>
-{/*
-            {updateState.error && <span className='text_type_main-small text_color_error mt-6'>{updateState.error}</span>}
-*/}
             <div className={`pt-6`}>
                 <Button htmlType="button" type="secondary" disabled={!canUpdate} onClick={cancelSave}>Отменить</Button>
                 <Button htmlType="submit" disabled={!canUpdate}>Сохранить</Button>

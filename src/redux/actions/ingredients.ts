@@ -6,7 +6,7 @@ import {
 } from "../consts/ingredients";
 import {TIngredient} from "../types/ingredients";
 import {AppDispatch, AppThunk} from "../types";
-import {checkResponse, checkSuccess, getApiUrl} from "../../services/http";
+import {checkResponse, checkSuccess, getApiUrl, request} from "../../services/http";
 
 interface IIngredientsRequestAction {
     readonly type: typeof INGREDIENTS_REQUEST;
@@ -43,9 +43,7 @@ export type TIngredientsActions =
 export const getIngredientsThunk: AppThunk = () => (dispatch: AppDispatch) => {
     dispatch(ingredientsRequest());
     const endpoint = getApiUrl('ingredients');
-    fetch(endpoint)
-        .then(checkResponse)
-        .then(checkSuccess<{data: TIngredient[]}>)
+    request<{data: TIngredient[]}>(endpoint)
         .then(data => dispatch(ingredientsSuccess(data.data)))
         .catch(() => dispatch(ingredientsFailure()));
 };

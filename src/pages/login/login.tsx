@@ -7,12 +7,13 @@ import commonStyles from "../../styles/common.module.css";
 import {useDispatch, useSelector} from "../../redux/hooks";
 import {TLoginRequest} from "../../redux/types/user";
 import {userAuthThunk, userLoginThunk} from "../../redux/actions/user";
+import {useForm} from "../../hooks/useForm";
 
 export const LoginPage: FC = () => {
     const dispatch = useDispatch();
 
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const {values, handleChange} = useForm({});
+
     const [pwdType, setPwdType] = useState<"password" | "text">('password');
 
     useEffect(() => {
@@ -23,11 +24,11 @@ export const LoginPage: FC = () => {
         e.preventDefault();
         e.stopPropagation();
         const payload: TLoginRequest = {
-            email: email,
-            password: password
+            email: values.email,
+            password: values.password
         }
         dispatch(userLoginThunk(payload));
-    }, [dispatch, email, password])
+    }, [dispatch, values])
 
     const showPassword = () => {
         setPwdType(pwdType === 'password' ? 'text' : 'password')
@@ -63,22 +64,22 @@ export const LoginPage: FC = () => {
                                 <Input
                                     name={"email"}
                                     disabled={userLoginRequest}
-                                    value={email}
+                                    value={values.email || ""}
                                     type={'email'}
                                     placeholder={'E-mail'}
-                                    onChange={e => setEmail(e.target.value)}
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className={`mt-6`}>
                                 <Input
                                     name={"password"}
                                     disabled={userLoginRequest}
-                                    value={password}
+                                    value={values.password || ""}
                                     type={pwdType}
                                     placeholder={'Пароль'}
                                     icon={'ShowIcon'}
                                     onIconClick={showPassword}
-                                    onChange={e => setPassword(e.target.value)}
+                                    onChange={handleChange}
                                 />
                             </div>
                             {userLoginFailure && <span className='text_type_main-small text_color_error mt-6'>Ошибка авторизации</span>}

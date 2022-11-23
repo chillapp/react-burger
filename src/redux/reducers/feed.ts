@@ -6,7 +6,7 @@ export type TFeedState = {
     profileFeed: TFeed;
 }
 
-const feedInitialState: TFeedState = {
+export const feedInitialState: TFeedState = {
     commonFeed: {
         orders: [],
         total: 0,

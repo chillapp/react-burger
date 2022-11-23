@@ -28,7 +28,7 @@ export const Modal: FC<{header: string, children: ReactNode, onClose: () => void
             <div className={`${Styles.modal}`}>
                 <div className={`pt-10 pr-10 pl-10 ${CommonStyles.flexRow} ${CommonStyles.flexJCBetween}`}>
                     <span className='text text_type_main-medium'>{ header }</span>
-                    <button onClick={onClose} className={`${CommonStyles.button}`}>
+                    <button onClick={onClose} className={`${CommonStyles.button} close-modal`}>
                         <CloseIcon type='primary'/>
                     </button>
                 </div>

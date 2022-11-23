@@ -10,7 +10,7 @@ export type TSocketsState = {
     [url: string]: TSocketState
 }
 
-const socketInitialState: TSocketsState = { }
+export const socketInitialState: TSocketsState = { }
 
 export const socketReducer = (state = socketInitialState, action: TWSSocketActions): TSocketsState => {
     switch (action.type) {

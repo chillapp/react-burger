@@ -5,6 +5,7 @@ import {Link, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "../../redux/hooks";
 import {TResetPasswordRequest} from "../../redux/types/user";
 import {userAuthThunk, userResetPasswordThunk} from "../../redux/actions/user";
+import {useForm} from "../../hooks/useForm";
 
 export interface IResetPasswordPayload {
     token: string
@@ -14,8 +15,8 @@ export interface IResetPasswordPayload {
 export const ResetPasswordPage: FC = () => {
     const dispatch = useDispatch();
 
-    const [newPwd, setNewPwd] = useState<string>("");
-    const [emailCode, setEmailCode] = useState<string>("");
+    const {values, handleChange} = useForm({});
+
     const [pwdType, setPwdType] = useState<"password" | "text">("password");
 
     const showPassword = () => {
@@ -37,11 +38,11 @@ export const ResetPasswordPage: FC = () => {
         e.preventDefault();
         e.stopPropagation();
         const payload: TResetPasswordRequest = {
-            password: newPwd,
-            token: emailCode
+            password: values.newPwd,
+            token: values.emailCode
         }
         dispatch(userResetPasswordThunk(payload));
-    }, [dispatch, emailCode, newPwd]);
+    }, [dispatch, values]);
 
     if (user) {
         return <Redirect to="/" />;
@@ -61,22 +62,24 @@ export const ResetPasswordPage: FC = () => {
             <span className={`text_type_main-default text_color_primary`}>Восстановление пароля</span>
             <div className={`mt-6`}>
                 <Input
+                    name="newPwd"
                     disabled={userResetPasswordRequest}
-                    value={newPwd}
+                    value={values.newPwd || ""}
                     type={pwdType}
                     placeholder={'Введите новый пароль'}
-                    onChange={e => setNewPwd(e.target.value)}
+                    onChange={handleChange}
                     icon={'ShowIcon'}
                     onIconClick={showPassword}
                 />
             </div>
             <div className={`mt-6`}>
                 <Input
+                    name="emailCode"
                     disabled={userResetPasswordRequest}
-                    value={emailCode}
+                    value={values.emailCode}
                     type={'text'}
                     placeholder={'Введите код из письма'}
-                    onChange={e => setEmailCode(e.target.value)}
+                    onChange={handleChange}
                 />
             </div>
             {userResetPasswordFailure && <span className='text_type_main-small text_color_error mt-6'>Ошибка смены пароля</span>}

@@ -5,13 +5,13 @@ import {Link, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "../../redux/hooks";
 import {userAuthThunk, userRegisterThunk} from "../../redux/actions/user";
 import {TUser} from "../../redux/types/user";
+import {useForm} from "../../hooks/useForm";
 
 export const RegisterPage: FC = () => {
     const dispatch = useDispatch();
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const {values, handleChange} = useForm({});
+
     const [pwdType, setPwdType] = useState<"password" | "text">('password');
 
     useEffect(() => {
@@ -26,12 +26,12 @@ export const RegisterPage: FC = () => {
         e.preventDefault();
         e.stopPropagation();
         const payload: TUser = {
-            email: email,
-            password: password,
-            name: name
+            email: values.email,
+            password: values.password,
+            name: values.name
         }
         dispatch(userRegisterThunk(payload));
-    }, [email, password, name, dispatch])
+    }, [values, dispatch])
 
     const {
         user,
@@ -53,31 +53,34 @@ export const RegisterPage: FC = () => {
             <span className={`text_type_main-default text_color_primary`}>Регистрация</span>
             <div className={`mt-6`}>
                 <Input
+                    name="name"
                     disabled={userRegisterRequest}
-                    value={name}
+                    value={values.name || ""}
                     type={'text'}
                     placeholder={'Имя'}
-                    onChange={e => setName(e.target.value)}
+                    onChange={handleChange}
                 />
             </div>
             <div className={`mt-6`}>
                 <Input
+                    name="email"
                     disabled={userRegisterRequest}
-                    value={email}
+                    value={values.email || ""}
                     type={'email'}
                     placeholder={'E-mail'}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={handleChange}
                 />
             </div>
             <div className={`mt-6`}>
                 <Input
+                    name="password"
                     disabled={userRegisterRequest}
-                    value={password}
+                    value={values.password || ""}
                     type={pwdType}
                     placeholder={'Пароль'}
                     icon={'ShowIcon'}
                     onIconClick={showPassword}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={handleChange}
                 />
             </div>
             {userRegisterFailure && <span className='text_type_main-small text_color_error mt-6'>Ошибка регистрации</span>}
