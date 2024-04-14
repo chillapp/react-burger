@@ -34,7 +34,7 @@ export type TUserState = {
     userCreateOrderFailure: boolean
 }
 
-const userInitialState: TUserState = {
+export const userInitialState: TUserState = {
     user: null,
 
     userAuthRequest: false,

@@ -1,3 +1,8 @@
+
+export function request<T>(url: string, options?: RequestInit) {
+    return fetch(url, options).then(checkResponse).then(checkSuccess<T>);
+}
+
 export interface IResponse {
     success: boolean
     message?: string

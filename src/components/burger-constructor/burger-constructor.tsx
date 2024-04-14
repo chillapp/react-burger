@@ -40,7 +40,7 @@ export const BurgerConstructor: FC = () => {
 
     return (
         <>
-            <section ref={dropTarget} className={`pt-25 ml-10 ${commonStyles.flexColumn} ${styles.content}`}>
+            <section ref={dropTarget} className={`pt-25 ml-10 drop-area-ingredient ${commonStyles.flexColumn} ${styles.content}`}>
                 <BurgerConstructorBunItem role='top' bun={bunItem && bunItem[0]} />
                     <ul className={`scrollerY ${commonStyles.flexColumn} ${styles.list}`}>
                         { ingredientItems }

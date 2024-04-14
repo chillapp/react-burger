@@ -1,13 +1,13 @@
 import {TIngredient} from "../types/ingredients";
 import {TConstructorActions} from "../actions/constructor";
-import {v4 as uuidV4} from "uuid"
+import { v4 as uuidV4} from "uuid"
 
 export type TConstructorState = {
     cart: TIngredient[]
     totalPrice: number
 }
 
-const constructorInitialState: TConstructorState = {
+export const constructorInitialState: TConstructorState = {
     cart: [],
     totalPrice: 0
 }

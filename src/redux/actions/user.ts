@@ -32,7 +32,7 @@ import {
     TUserUpdateRequest
 } from "../types/user";
 import {AppDispatch, AppThunk} from "../types";
-import {checkResponse, checkSuccess, getApiUrl} from "../../services/http";
+import {checkResponse, checkSuccess, getApiUrl, request} from "../../services/http";
 import {getCookie, setCookie} from "../../utils/common";
 
 // USER LOGIN
@@ -61,16 +61,14 @@ const userLoginFailure = (): IUserLoginFailureAction => ({
 
 export const userLoginThunk: AppThunk = (login: TLoginRequest) => (dispatch: AppDispatch) => {
     dispatch(userLoginRequest());
-    const promise = fetch(getApiUrl('auth/login'), {
+    const options: RequestInit = {
         method: 'POST',
         body: JSON.stringify(login),
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
         },
-    })
-    promise
-        .then(checkResponse)
-        .then(checkSuccess<TLoginResponse>)
+    }
+    request<TLoginResponse>(getApiUrl('auth/login'), options)
         .then(data => {
             localStorage.setItem("refreshToken", data.refreshToken || "");
             setCookie("accessToken", data.accessToken || "");
@@ -105,16 +103,15 @@ const userCreateOrderFailure = (): IUserCreateOrderFailureAction => ({
 
 export const userCreateOrderThunk: AppThunk = (ingredients: string[]) => (dispatch: AppDispatch) => {
     dispatch(userCreateOrderRequest());
-    const promise = fetch(getApiUrl("orders"), {
+    const options: RequestInit = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
+            "Authorization": getCookie("accessToken")
         },
         body: JSON.stringify({ ingredients: ingredients }),
-    });
-    promise
-        .then(checkResponse)
-        .then(checkSuccess<TCreateOrderResponse>)
+    }
+    request<TCreateOrderResponse>(getApiUrl("orders"), options)
         .then(data => dispatch(userCreateOrderSuccess({ name: data.name, number: data.order.number })))
         .catch(() => dispatch(userCreateOrderFailure()));
 };
@@ -145,15 +142,13 @@ const userAuthFailure = (): IUserAuthFailureAction => ({
 
 export const userAuthThunk: AppThunk = () => (dispatch: AppDispatch) => {
     dispatch(userAuthRequest());
-    const promise = fetch(getApiUrl("auth/user"), {
+    const options: RequestInit = {
         method: 'GET',
         headers: {
             "Authorization": getCookie("accessToken"),
         },
-    });
-    promise
-        .then(checkResponse)
-        .then(checkSuccess<{user: TUser}>)
+    }
+    request<{user: TUser}>(getApiUrl("auth/user"), options)
         .then(data => dispatch(userAuthSuccess(data.user)))
         .catch((err) => {
             if (err === "jwt expire") {
@@ -188,16 +183,14 @@ const userForgotPasswordFailure = (): IUserForgotPasswordFailureAction => ({
 
 export const userForgotPasswordThunk: AppThunk = (email: string) => (dispatch: AppDispatch) => {
     dispatch(userForgotPasswordRequest());
-    const promise = fetch(getApiUrl("password-reset"), {
+    const options: RequestInit = {
         method: 'POST',
         body: JSON.stringify({ email } ),
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
         },
-    });
-    promise
-        .then(checkResponse)
-        .then(checkSuccess)
+    }
+    request(getApiUrl("password-reset"), options)
         .then(() => dispatch(userForgotPasswordSuccess()))
         .catch(() => dispatch(userForgotPasswordFailure()));
 };
@@ -226,16 +219,14 @@ const userResetPasswordFailure = (): IUserResetPasswordFailureAction => ({
 
 export const userResetPasswordThunk: AppThunk = (data: TResetPasswordRequest) => (dispatch: AppDispatch) => {
     dispatch(userResetPasswordRequest());
-    const promise = fetch(getApiUrl("password-reset/reset"), {
+    const options: RequestInit = {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
         },
-    });
-    promise
-        .then(checkResponse)
-        .then(checkSuccess)
+    }
+    request(getApiUrl("password-reset/reset"), options)
         .then(() => dispatch(userResetPasswordSuccess()))
         .catch(() => dispatch(userResetPasswordFailure()));
 };
@@ -264,7 +255,7 @@ const userLogoutFailure= (): IUserLogoutFailureAction => ({
 
 export const userLogoutThunk: AppThunk = () => (dispatch: AppDispatch) => {
     dispatch(userLogoutRequest());
-    const promise = fetch(getApiUrl("auth/logout"), {
+    const options: RequestInit = {
         method: "POST",
         body: JSON.stringify({
             token: localStorage.getItem("refreshToken")
@@ -272,10 +263,8 @@ export const userLogoutThunk: AppThunk = () => (dispatch: AppDispatch) => {
         headers: {
             "Content-Type": "application/json;charset=utf-8",
         },
-    });
-    promise
-        .then(checkResponse)
-        .then(checkSuccess)
+    }
+    request(getApiUrl("auth/logout"), options)
         .then(() => dispatch(userLogoutSuccess()))
         .catch(() => dispatch(userLogoutFailure()));
 };
@@ -306,17 +295,15 @@ const userUpdateFailure = (): IUserUpdateFailureAction => ({
 
 export const userUpdateThunk: AppThunk = (data: TUserUpdateRequest) => (dispatch: AppDispatch) => {
     dispatch(userUpdateRequest());
-    const promise = fetch(getApiUrl("auth/user"), {
+    const options: RequestInit = {
         method: 'PATCH',
         headers: {
             "Authorization": getCookie("accessToken"),
             "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify(data)
-    });
-    promise
-        .then(checkResponse)
-        .then(checkSuccess<{user: TUser}>)
+    }
+    request<{user: TUser}>(getApiUrl("auth/user"), options)
         .then((data) => dispatch(userUpdateSuccess(data.user)))
         .catch(() => dispatch(userUpdateFailure()));
 };
@@ -348,16 +335,14 @@ const userRegisterFailure = (): IUserRegisterFailureAction => ({
 
 export const userRegisterThunk: AppThunk = (user: TUser) => (dispatch: AppDispatch) => {
     dispatch(userRegisterRequest());
-    const promise = fetch(getApiUrl("auth/register"), {
+    const options: RequestInit = {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
         },
-    });
-    promise
-        .then(checkResponse)
-        .then(checkSuccess<TLoginResponse>)
+    }
+   request<TLoginResponse>(getApiUrl("auth/register"), options)
         .then((data) => {
             localStorage.setItem("refreshToken", data.refreshToken || "");
             setCookie("accessToken", data.accessToken || "");
@@ -392,28 +377,3 @@ export type TUserActions =
     IUserRegisterRequestAction |
     IUserRegisterSuccessAction |
     IUserRegisterFailureAction
-
-
-/*function refreshTokenRequest() {
-    return fetch(getApiUrl('auth/token'), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify({
-            token: localStorage.getItem('refreshToken')
-        })
-    }).then(checkResponse).then(checkSuccess);
-}
-
-function refreshToken(afterRefresh: Function, data) {
-    return function (dispatch: Function) {
-        refreshTokenRequest()
-            .then((response: TLoginResponse) => {
-                localStorage.setItem("refreshToken", response.refreshToken || "");
-                setCookie("accessToken", response.accessToken || "");
-                dispatch(afterRefresh(data));
-            })
-    }
-}*/
-

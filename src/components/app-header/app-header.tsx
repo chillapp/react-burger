@@ -5,13 +5,14 @@ import {
     Logo,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import {IconButton} from "../icon-button/icon-button";
+import {NavLink} from "react-router-dom";
 
 export default function AppHeader() {
     return (
         <header className={`p-4 ${commonStyles.panelColor} ${commonStyles.flexRow} ${commonStyles.flexJCAround}`}>
-            <div className={styles.logoCentering}>
+            <NavLink to="/" className={`${styles.logoCentering}`}>
                 <Logo />
-            </div>
+            </NavLink>
             <section className={commonStyles.flexRow}>
                 <IconButton navLink='/' icon='burger'>Конструктор</IconButton>
                 <IconButton navLink='/feed' icon='list'>Лента заказов</IconButton>
